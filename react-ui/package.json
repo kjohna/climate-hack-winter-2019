@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.18.0",
     "material-ui": "^0.20.2",
     "moment": "^2.23.0",
     "prop-types": "^15.6.2",
@@ -13,7 +14,9 @@
     "react-scripts": "^2.1.2",
     "redux": "^4.0.1",
     "redux-promise": "^0.6.0",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "serve": "^10.1.1",
+    "simplesky": "^1.1.1"
   },
   "scripts": {
     "start": "react-scripts start",
