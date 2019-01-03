@@ -21,6 +21,7 @@
 
 .data-display {
   display: flex;
+  flex-direction: row;
 }
 
 .container {
@@ -34,4 +35,8 @@
 .weather-alerts-place-holder {
   display: flex;
   align-items: center;
+}
+
+.graph-header {
+  width: 300px;
 }

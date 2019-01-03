@@ -32,19 +32,19 @@ class Graph extends Component {
   componentWillMount() {
     console.log(this.state);
     // This function creates data that doesn't look entirely random
-    const data = [];
+    const dataHigh = [];
 
-    for (let x = 0; x <= 30; x++) {
+    for (let x = 0; x <= 20; x++) {
       const random = Math.random();
-      const temp = data.length > 0 ? data[data.length - 1].y : 50;
+      const temp = dataHigh.length > 0 ? dataHigh[dataHigh.length - 1].y : 50;
       const y =
         random >= 0.45
           ? temp + Math.floor(random * 20)
           : temp - Math.floor(random * 20);
-      data.push({ x, y });
+      dataHigh.push({ x, y });
     }
     this.setState({
-      data,
+      dataHigh,
       fetchingData: false
     });
   }
@@ -59,10 +59,10 @@ class Graph extends Component {
           </ToolTip>
         ) : null}
 
-        <div className="header">TEST CHART</div>
+        <div className="graph-header" />
         {!this.state.fetchingData ? (
           <LineChart
-            data={this.state.data}
+            data={this.state.dataHigh}
             onPointHover={this.handlePointHover}
           />
         ) : null}
