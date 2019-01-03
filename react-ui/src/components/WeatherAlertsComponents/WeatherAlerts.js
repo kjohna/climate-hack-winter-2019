@@ -14,7 +14,7 @@ class WeatherAlerts extends Component {
   
   componentDidMount() {
     const getSummary = () => {
-      weather.getWeather(zip, null, null, ['alerts', 'flags']).then((response) => {
+      weather.getWeather("zip", null, null, ['alerts', 'flags']).then((response) => {
         console.log(response);
     }).catch((error) => {
         console.log(error);
