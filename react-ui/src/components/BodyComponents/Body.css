@@ -1,5 +1,9 @@
 .body {
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .body h1 {
@@ -15,8 +19,19 @@
   margin-bottom: 1.2rem;
 }
 
+.data-display {
+  display: flex;
+}
+
 .graph-place-holder {
   background-color: green;
+  margin: 20px;
+  padding: 20px;
   width: 600px;
   height: 400px;
+}
+
+.weather-alerts-place-holder {
+  display: flex;
+  align-items: center;
 }
