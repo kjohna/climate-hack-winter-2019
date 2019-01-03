@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-
-const rootReducer = combineReducers({})
+import temperatureReducer from './temperature';
+const rootReducer = combineReducers({temperatureReducer})
 
 export default rootReducer;

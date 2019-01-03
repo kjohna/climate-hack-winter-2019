@@ -14,7 +14,10 @@
     "react-ui/node_modules"
   ],
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "helmet": "^3.15.0",
+    "morgan": "^1.9.1",
+    "simplesky": "^1.1.1"
   },
   "repository": {
     "type": "git",
