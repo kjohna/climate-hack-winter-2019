@@ -1,0 +1,18 @@
+.display-currently {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.display-currently h2 {
+  font-size: 1.6rem;
+}
+
+.condition-icon {
+  margin-bottom: -50px;
+}
+
+.display-percent {
+  text-align: right;
+}
