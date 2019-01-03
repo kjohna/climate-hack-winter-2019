@@ -3,23 +3,28 @@ import "./ToolTip.css";
 
 class ToolTip extends Component {
   render() {
-    const { hoverLoc, activePoint } = this.props;
-    const svgLocation = document
-      .getElementsByClassName("linechart")[0]
-      .getBoundingClientRect();
+    const { trigger } = this.props;
+    const placementStyles = {};
 
-    let placementStyles = {};
-    let width = 100;
-    placementStyles.width = width + "px";
-    placementStyles.left = hoverLoc + svgLocation.left - width / 2;
+    if (trigger) {
+      const triggerRect = trigger.getBoundingClientRect();
+      placementStyles.left =
+        triggerRect.left + (triggerRect.right - triggerRect.left) / 2;
+      placementStyles.top = triggerRect.top;
+    }
 
     return (
-      <div className="hover" style={placementStyles}>
-        <div className="date">{activePoint.d}</div>
-        <div className="price">{activePoint.p}</div>
+      <div
+        className={"tooltip tooltip-green tooltip-top"}
+        style={placementStyles}
+      >
+        <div className="tooltip_arrow" />
+        <div className="tooltip_inner">{this.props.children}</div>
       </div>
     );
   }
 }
+// DEFAULT PROPS
+ToolTip.defaultProps = {};
 
 export default ToolTip;
