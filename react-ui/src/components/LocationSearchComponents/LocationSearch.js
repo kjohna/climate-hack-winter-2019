@@ -8,8 +8,7 @@ class LocationSearch extends Component {
     return (
       <div className="location-search">
         <form action="">
-          <h4>Input Zip code</h4>
-          <input type="text" value={zip}></input>
+          <input type="text" value={zip}></input> (zip code)
         </form>
       </div>
     );

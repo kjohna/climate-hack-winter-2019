@@ -63,6 +63,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6rem;
 }
 
 code {

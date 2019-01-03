@@ -1,6 +1,18 @@
+.body {
+  padding: 20px;
+}
+
 .body h1 {
-  font-size: 42px;
+  font-size: 2.4rem;
   color: gray;
+  margin-bottom: 1.2rem;
+  display: flex;
+  align-items: center;
+}
+
+.body p {
+  width: 30%;
+  margin-bottom: 1.2rem;
 }
 
 .graph-place-holder {
