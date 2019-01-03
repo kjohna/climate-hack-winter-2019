@@ -1,0 +1,10 @@
+.body h1 {
+  font-size: 42px;
+  color: gray;
+}
+
+.graph-place-holder {
+  background-color: green;
+  width: 600px;
+  height: 400px;
+}

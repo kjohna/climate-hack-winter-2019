@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import logo from '../../logo.svg';
 import './Header.css';
+import SettingsMenu from './SettingsMenu';
 
 class Header extends Component {
   render() {
@@ -20,6 +21,9 @@ class Header extends Component {
           >
             Learn React
           </a>
+          <div className="red-background">
+            <SettingsMenu />
+          </div>
         </header>
       </div>
     );
