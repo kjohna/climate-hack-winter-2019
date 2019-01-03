@@ -64,8 +64,14 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.6rem;
+  background-color: #E6E6E6;
 }
 
 code {
   font-family: source-code-pro, "Courier New", monospace;
+}
+
+#root {
+  max-width: 600px;
+  margin: 0 auto;
 }
