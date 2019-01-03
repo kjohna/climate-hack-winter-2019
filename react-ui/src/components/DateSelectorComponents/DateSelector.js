@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import './DateSelector.css';
+import DateChoice from './DateChoice';
 
 class DateSelector extends Component {
   render () {
-    const type = 'start';
-
     return (
       <div className="date-selector">
-        <form action="">
-          <h4>Date</h4>
-          <input type="date" name={`${type} date`}></input>
-          <input type="submit"></input>
-        </form>
+        <div className="start-date">
+          <DateChoice type="Start" />
+        </div>
+        <div className="stop-date">
+          <DateChoice type="Stop" />
+        </div>
       </div>
     );
   }
