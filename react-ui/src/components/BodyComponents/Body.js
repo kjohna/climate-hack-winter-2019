@@ -16,7 +16,9 @@ class Body extends Component {
           <Graph />
           <div className="weather-alerts-place-holder">
             <img src={statusIcon}></img>
-            <DisplayTemp />
+            High temp: <DisplayTemp temp="65" unit="" type="high" />
+            Low temp: <DisplayTemp temp="35" unit="" type="low" />
+            Current temp: <DisplayTemp temp="45" unit="F" type="current" />
           </div>
         </div>
         <DateSelector />

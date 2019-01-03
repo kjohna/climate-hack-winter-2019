@@ -3,11 +3,12 @@ import './DisplayTemp.css';
 
 class DisplayTemp extends Component {
   render () {
-    const temp = 35;
-    const unit = 'F';
+    const temp = this.props.temp;
+    const unit = this.props.unit;
+    const type = this.props.type; // high, low, current
 
     return (
-      <div className="display-temp">
+      <div className={`display-temp ${type}-temp`}>
         <h2>{`${temp}°${unit}`}</h2>
       </div>
     );
