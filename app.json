@@ -1,6 +1,6 @@
 {
-  "name": "heroku-cra-node",
-  "description": "web app made of create-react-app UI + Node API",
+  "name": "climate-hack-winter-2019",
+  "description": "show current and past temperatures",
   "scripts": {
   },
   "env": {
