@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import moment from "moment";
-// import './App.css';
+import data from "./weatherData.json";
 import LineChart from "./LineChart";
 import ToolTip from "./ToolTip";
 
@@ -15,87 +15,57 @@ class Graph extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      activePoint: null,
+      toolTipTrigger: null,
       fetchingData: true,
-      data: null,
-      hoverLoc: null,
-      activePoint: null
+      data: null
     };
   }
-  handleChartHover(hoverLoc, activePoint) {
+
+  handlePointHover = (point, trigger) => {
     this.setState({
-      hoverLoc: hoverLoc,
-      activePoint: activePoint
+      activePoint: point,
+      toolTipTrigger: trigger
+    });
+  };
+
+  componentWillMount() {
+    console.log(this.state);
+    // This function creates data that doesn't look entirely random
+    const dataHigh = [];
+
+    for (let x = 0; x <= 20; x++) {
+      const random = Math.random();
+      const temp = dataHigh.length > 0 ? dataHigh[dataHigh.length - 1].y : 50;
+      const y =
+        random >= 0.45
+          ? temp + Math.floor(random * 20)
+          : temp - Math.floor(random * 20);
+      dataHigh.push({ x, y });
+    }
+    this.setState({
+      dataHigh,
+      fetchingData: false
     });
   }
-  componentDidMount() {
-    const getData = () => {
-      const weatherData = weather
-        .getTimeMachine(zip, "+3y", null, null, [])
-        // , "", "", [
-        //   "minutely",
-        //   "hourly",
-        //   "currently",
-        //   "alerts",
-        // "flags"]
-        //   )
-        .then(response => {
-          console.log(response);
-        })
-        .catch(error => {
-          console.log(error);
-        });
 
-      //   fetch(url)
-      //     .then(r => r.json())
-      //     .then(bitcoinData => {
-      //       const sortedData = [];
-      //       let count = 0;
-      //       for (let date in bitcoinData.bpi) {
-      //         sortedData.push({
-      //           d: moment(date).format("MMM DD"),
-      //           p: bitcoinData.bpi[date].toLocaleString("us-EN", {
-      //             style: "currency",
-      //             currency: "USD"
-      //           }),
-      //           x: count, //previous days
-      //           y: bitcoinData.bpi[date] // numerical price
-      //         });
-      //         count++;
-      //       }
-      //       this.setState({
-      //         data: sortedData,
-      //         fetchingData: false
-      //       });
-      //     })
-      //     .catch(e => {
-      //       console.log(e);
-      //     });
-    };
-    getData();
-  }
   render() {
     return (
-      <div className="container">
-        <div className="row">
-          <div className="popup">
-            {this.state.hoverLoc ? (
-              <ToolTip
-                hoverLoc={this.state.hoverLoc}
-                activePoint={this.state.activePoint}
-              />
-            ) : null}
-          </div>
-        </div>
-        <div className="row">
-          <div className="chart">
-            {!this.state.fetchingData ? (
-              <LineChart
-                data={this.state.data}
-                onChartHover={(a, b) => this.handleChartHover(a, b)}
-              />
-            ) : null}
-          </div>
-        </div>
+      <div className="tooltip">
+        {this.state.toolTipTrigger ? (
+          <ToolTip trigger={this.state.toolTipTrigger}>
+            <div>y : {this.state.activePoint.y}</div>
+            <div>x : {this.state.activePoint.x}</div>
+          </ToolTip>
+        ) : null}
+
+        <div className="graph-header" />
+        {!this.state.fetchingData ? (
+          <LineChart
+            data={this.state.dataHigh}
+            onPointHover={this.handlePointHover}
+          />
+        ) : null}
       </div>
     );
   }

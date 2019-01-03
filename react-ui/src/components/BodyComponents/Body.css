@@ -20,6 +20,7 @@
 
 .data-display {
   display: flex;
+  flex-direction: row;
 }
 
 .container {
@@ -28,4 +29,13 @@
   padding: 20px;
   width: 400px;
   height: 300px;
+}
+
+.weather-alerts-place-holder {
+  display: flex;
+  align-items: center;
+}
+
+.graph-header {
+  width: 300px;
 }
