@@ -4,13 +4,6 @@ import data from "./weatherData.json";
 import LineChart from "./LineChart";
 import ToolTip from "./ToolTip";
 
-const dskey = "f39109d1263aa6b04983e1c34ef1e3df";
-const gmapkey = "AIzaSyCd8iUXQ2EfQF-LktLoJzgJ4toV7Q8ZW40";
-const zip = "07960";
-
-const simplesky = require("simplesky");
-var weather = new simplesky(gmapkey, dskey);
-
 class Graph extends Component {
   constructor(props) {
     super(props);
@@ -31,6 +24,7 @@ class Graph extends Component {
 
   componentWillMount() {
     console.log(this.state);
+
     // This function creates data that doesn't look entirely random
     const dataHigh = [];
 
@@ -41,7 +35,7 @@ class Graph extends Component {
         random >= 0.45
           ? temp + Math.floor(random * 20)
           : temp - Math.floor(random * 20);
-      dataHigh.push({ x, y });
+      dataHigh.push({ d, h, l });
     }
     this.setState({
       dataHigh,
