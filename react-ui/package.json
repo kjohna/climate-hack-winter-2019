@@ -13,7 +13,9 @@
     "react-scripts": "^2.1.2",
     "redux": "^4.0.1",
     "redux-promise": "^0.6.0",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "serve": "^10.1.1",
+    "simplesky": "^1.1.1"
   },
   "scripts": {
     "start": "react-scripts start",

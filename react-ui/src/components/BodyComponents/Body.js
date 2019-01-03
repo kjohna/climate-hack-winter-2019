@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
-import './Body.css';
-import DateSelector from '../DateSelectorComponents/DateSelector';
-import LocationSearch from '../LocationSearchComponents/LocationSearch';
-import DisplayTemp from '../DisplayTempComponents/DisplayTemp';
+
+import React, { Component } from "react";
+import "./Body.css";
+import DateSelector from "../DateSelectorComponents/DateSelector";
+import LocationSearch from "../LocationSearchComponents/LocationSearch";
+import DisplayTemp from "../DisplayTempComponents/DisplayTemp";
+import Graph from "../GraphComponents/Graph";
 import statusIcon from '../../img/Cloud-Sun.svg'
 
 class Body extends Component {
@@ -11,9 +13,7 @@ class Body extends Component {
       <div className="body">
         <LocationSearch />
         <div className="data-display">
-          <div className="graph-place-holder">
-            <p>graph will go here</p>
-          </div>
+          <Graph />
           <div className="weather-alerts-place-holder">
             <img src={statusIcon}></img>
             <DisplayTemp />
