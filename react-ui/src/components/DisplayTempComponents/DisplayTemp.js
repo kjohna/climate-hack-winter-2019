@@ -8,7 +8,7 @@ class DisplayTemp extends Component {
 
     return (
       <div className="display-temp">
-        The temperature is: {`${temp}°${unit}`}
+        <h2>{`${temp}°${unit}`}</h2>
       </div>
     );
   }
