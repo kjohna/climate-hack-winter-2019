@@ -30,3 +30,11 @@
     transform: rotate(360deg);
   }
 }
+
+.red-background {
+  background-color: red;
+}
+
+.settings-menu-icon {
+  height: 100px;
+}
