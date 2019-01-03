@@ -23,12 +23,12 @@
   display: flex;
 }
 
-.graph-place-holder {
+.container {
   background-color: green;
   margin: 20px;
   padding: 20px;
-  width: 600px;
-  height: 400px;
+  width: 400px;
+  height: 300px;
 }
 
 .weather-alerts-place-holder {

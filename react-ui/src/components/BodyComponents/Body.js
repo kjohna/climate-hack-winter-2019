@@ -6,6 +6,7 @@ import LocationSearch from "../LocationSearchComponents/LocationSearch";
 import DisplayTemp from "../DisplayTempComponents/DisplayTemp";
 import Graph from "../GraphComponents/Graph";
 import statusIcon from '../../img/Cloud-Sun.svg'
+import WeatherAlerts from "../WeatherAlertsComponents/WeatherAlerts";
 
 class Body extends Component {
   render() {
@@ -16,9 +17,10 @@ class Body extends Component {
           <Graph />
           <div className="weather-alerts-place-holder">
             <img src={statusIcon}></img>
-            <DisplayTemp />
+            High temp: <DisplayTemp temp="65" unit="" type="high" />
           </div>
         </div>
+        <WeatherAlerts />
         <DateSelector />
       </div>
     );
