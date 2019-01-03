@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './Body.css';
 import DateSelector from '../DateSelectorComponents/DateSelector';
 import LocationSearch from '../LocationSearchComponents/LocationSearch';
+import DisplayTemp from '../DisplayTempComponents/DisplayTemp';
 
 class Body extends Component {
   render() {
@@ -13,6 +14,7 @@ class Body extends Component {
         </p>
         <DateSelector />
         <LocationSearch />
+        <DisplayTemp />
       </div>
     );
   }
