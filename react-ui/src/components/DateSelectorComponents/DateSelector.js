@@ -7,10 +7,10 @@ class DateSelector extends Component {
     return (
       <div className="date-selector">
         <div className="start-date">
-          <DateChoice />
+          <DateChoice type="Start" />
         </div>
         <div className="stop-date">
-          <DateChoice />
+          <DateChoice type="Stop" />
         </div>
       </div>
     );
