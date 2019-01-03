@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './WeatherAlerts.css';
 
-class LocationSearch extends Component {
+class WeatherAlerts extends Component {
   render () {
     const zip = 10001;
 
