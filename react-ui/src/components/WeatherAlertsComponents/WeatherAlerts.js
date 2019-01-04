@@ -25,7 +25,7 @@ class WeatherAlerts extends Component {
 
           <h4>This is a Weather Alert! </h4>
 
-          <p>Light rain tomorrow through Tuesday, with high temperatures bottoming out at 38°F on Monday.</p>
+          <p>Light rain tomorrow through Tuesday, with high temperatures bottoming out at 68°F on Monday.</p>
         </form>
       </div>
     );

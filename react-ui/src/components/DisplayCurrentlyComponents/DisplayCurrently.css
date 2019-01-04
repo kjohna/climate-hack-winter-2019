@@ -4,7 +4,7 @@
   margin: 50px 0;
   display: flex;
   align-items: center;    
-  background-color: rgba(230,230,230,.6);
+  background-color: rgba(255, 255, 255, 0.1);
   border-radius: 10px;
   padding: 5px;
   white-space: nowrap;
@@ -41,8 +41,9 @@
 .condition-rh-percent {
   text-align: right;
   margin-top: 30px;
+  color: #e6e6e6;
 }
 
 .display-currently > svg {
-  fill: #444444;
+  fill: #c0c0c0;
 }
