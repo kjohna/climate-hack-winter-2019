@@ -1,4 +1,5 @@
 .tooltip {
+  padding-top: 20px;
   position: fixed;
   display: block;
   font-size: 0.75rem;

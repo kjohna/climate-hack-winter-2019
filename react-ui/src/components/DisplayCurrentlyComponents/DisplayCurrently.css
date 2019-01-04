@@ -1,4 +1,5 @@
 .display-currently {
+  padding-left: 450px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -15,4 +16,8 @@
 
 .display-percent {
   text-align: right;
+}
+
+.display-currently > svg {
+  fill: #444444;
 }
