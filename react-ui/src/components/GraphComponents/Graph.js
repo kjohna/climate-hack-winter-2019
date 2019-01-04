@@ -4,13 +4,6 @@ import data from "./weatherData.json";
 import LineChart from "./LineChart";
 import ToolTip from "./ToolTip";
 
-const dskey = "f39109d1263aa6b04983e1c34ef1e3df";
-const gmapkey = "AIzaSyCd8iUXQ2EfQF-LktLoJzgJ4toV7Q8ZW40";
-const zip = "07960";
-
-const simplesky = require("simplesky");
-var weather = new simplesky(gmapkey, dskey);
-
 class Graph extends Component {
   constructor(props) {
     super(props);

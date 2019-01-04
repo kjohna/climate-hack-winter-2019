@@ -106,7 +106,7 @@ class LineChart extends Component {
 LineChart.defaultProps = {
   data: [],
   color: "#F7931E",
-  pointRadius: 2,
+  pointRadius: 6,
   svgHeight: 300,
   svgWidth: 700
 };
