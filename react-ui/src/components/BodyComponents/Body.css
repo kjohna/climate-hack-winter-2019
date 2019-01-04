@@ -24,10 +24,16 @@ html {
 }
 
 .data-display {
+  margin-bottom: 25px;
   position: relative;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  background-color: rgba(230, 230, 230, 0.6);
+  border-radius: 10px;
+  border: solid 2px lightgrey;
+  padding-top: 10px;
+  padding-bottom: 20px;
 }
 
 .container {
