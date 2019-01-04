@@ -8,7 +8,7 @@ export const GET_ERROR = 'GET_ERROR'
 
 /* eslint-disable no-console, semi-style */
 
-axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = false;
 
 export const ROOT_URL =
   (process.env.NODE_ENV === 'production') ?
@@ -32,12 +32,13 @@ export const authError = error => ({
   payload: error,
 });
 
-export const get_temps = (gps, history) => (dispatch) => {
+export const get_temps = (zip, history) => (dispatch) => {
 
-  console.log(`in "get_temps" for ${JSON.stringify(gps, null, 2)}`);
+  console.log(`in "get_temps" for ${JSON.stringify(zip, null, 2)}`);
   axios
-    .get(`${http}://${host}:${port}/gps/${gps}`)
+    .get(`${http}://${host}:${port}/api/weather/${zip}`)
     .then((response) => {
+      // console.log(`in "get_temps" response for ${JSON.stringify(response, null, 2)}`);
       dispatch({
         type: GET_TEMPS,
         payload: response.data        
