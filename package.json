@@ -1,7 +1,7 @@
 {
-  "name": "heroku-cra-node",
+  "name": "climate-hack-winter-2019",
   "version": "1.0.0",
-  "description": "How to use create-react-app with a custom Node API on Heroku",
+  "description": "show current and past temperatures",
   "engines": {
     "node": "10.x"
   },
@@ -14,12 +14,12 @@
     "react-ui/node_modules"
   ],
   "dependencies": {
+    "axios": "^0.18.0",
     "cors": "^2.8.5",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
     "helmet": "^3.15.0",
-    "morgan": "^1.9.1",
-    "simplesky": "^1.1.1"
+    "morgan": "^1.9.1"
   },
   "repository": {
     "type": "git",

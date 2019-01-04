@@ -24,10 +24,17 @@ html {
 }
 
 .data-display {
+  margin-bottom: 25px;
   position: relative;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+
+  justify-content: space-between;    
+  background-color: rgba(34,34,34,.6);
+  padding: 30px 30px 30px 10px;
+  border: solid 2px #E6E6E6;
+  border-radius: 10px;
+
 }
 
 .container {
@@ -45,4 +52,15 @@ html {
 
 .graph-header {
   width: 380px;
+}
+
+.map-widget {
+  padding:0px 0 0 0;
+  margin-top: 30px;
+  border: 2px solid lightgrey;
+  /* -moz-border-radius: 50px; */
+  border-radius: 20px;
+  overflow: hidden;
+  width:100%;
+  height: 198px;
 }

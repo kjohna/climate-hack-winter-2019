@@ -4,7 +4,7 @@ import {
 
   export default (temps = {}, action) => {
     switch (action.type) {
-      case GET_TEMPS:
+      case GET_TEMPS:                    
         return action.payload;
       default:
         return temps;

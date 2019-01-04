@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { Component } from "react";
 import "./Body.css";
 import DateSelector from "../DateSelectorComponents/DateSelector";
@@ -40,7 +41,9 @@ class Body extends Component {
           </div> */}
         </div>
         <WeatherAlerts />
-        {/* <DateSelector /> */}
+        <div class="map-widget"> <iframe  src="https://maps.darksky.net/@temperature,42.088,-94.567,4?domain=%22+encodeURIComponent(window.location.href)+%22&auth=1546575960_92b343a42fac1c0b889b8f8662a911fc&embed=true&timeControl=false&fieldControl=false&defaultField=temperature&defaultUnits=_f" width="555px" height="200px"   frameborder="0"></iframe></div>
+         
+         
       </div>
     );
   }

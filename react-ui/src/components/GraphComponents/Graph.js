@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { Component } from "react";
 import data from "./weatherData.json";
 import MetricsGraphics from "react-metrics-graphics";
