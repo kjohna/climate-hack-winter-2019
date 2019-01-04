@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { Component } from "react";
 import "./Body.css";
 import DateSelector from "../DateSelectorComponents/DateSelector";

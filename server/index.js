@@ -30,7 +30,7 @@ if (!isDev && cluster.isMaster) {
   const server = express();
   server.use(bodyParser.json());
   server.use(morgan('common'));
-  server.use(helmet());  
+   server.use(helmet());  
   // Priority serve any static files.
   server.use(express.static(path.resolve(__dirname, '../react-ui/build')));
   server.use(
@@ -38,8 +38,20 @@ if (!isDev && cluster.isMaster) {
       credentials: true,
       origin: [process.env.CLIENT_URL],
       allowedHeaders: ['Content-Type', 'Authorization']
+      
     })
   );
+  server.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  })
+  // server.use(function(req, res, next) {
+  //   res.header('Access-Control-Allow-Origin', '*');
+  //   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  //   next();
+  // });
+  
   server.use('/api/weather', weatherEndpoints);
   // Answer API requests.
   server.get('/api', function (req, res) {

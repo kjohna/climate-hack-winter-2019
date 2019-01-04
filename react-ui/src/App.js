@@ -1,10 +1,14 @@
 import React, { Component } from "react";
+import { Route } from 'react-router-dom';
 import "./App.css";
 import Header from "./components/HeaderComponents/Header";
 import Body from "./components/BodyComponents/Body";
 import Footer from "./components/FooterComponents/Footer";
+import TestComponent from './components/TestComponent'
+import dotenv from 'dotenv'
+dotenv.config()
 
-import LineChart from "./components/GraphComponents/LineChart";
+//import LineChart from "./components/GraphComponents/LineChart";
 
 class App extends Component {
   constructor(props) {
@@ -17,6 +21,7 @@ class App extends Component {
   componentDidMount() {
     fetch("/")
       .then(response => {
+        console.log(`did mount response ${response.status}`)
         if (!response.ok) {
           throw new Error(`status ${response.status}`);
         }
@@ -39,9 +44,20 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Header />
-        <Body />
-        <Footer />
+        <Route
+          exact path="/"
+          render={props =>
+            (<div>
+              <Header />
+              <Body />
+              <Footer />
+            </div>)
+          }
+        />
+        <Route
+          exact path="/test"
+          render = {props => <TestComponent />}
+        />
       </div>
     );
   }
