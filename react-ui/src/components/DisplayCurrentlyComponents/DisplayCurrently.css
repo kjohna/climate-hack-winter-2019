@@ -1,4 +1,5 @@
 .display-currently {
+  padding-left: 450px;
   display: flex;
   align-items: center;
 }
@@ -33,4 +34,8 @@
 .condition-rh-percent {
   text-align: right;
   margin-top: 30px;
+}
+
+.display-currently > svg {
+  fill: #444444;
 }
