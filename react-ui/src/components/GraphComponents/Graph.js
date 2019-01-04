@@ -13,7 +13,7 @@ class Graph extends Component {
   }
 
   render() {
-    console.log(this.props.past);
+    // console.log(this.props.past);
 
     // console.log(this.props.get_temps(33143));
     // data.forEach(function(each) {
@@ -33,7 +33,7 @@ class Graph extends Component {
           title="Downloads"
           description="This graphic shows a time-series of downloads."
           data={this.props.past}
-          width={400}
+          width={380}
           height={300}
           x_accessor="date"
           y_accessor="max"

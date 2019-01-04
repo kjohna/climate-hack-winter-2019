@@ -21,7 +21,7 @@ class App extends Component {
   componentDidMount() {
     fetch("/")
       .then(response => {
-        console.log(`did mount response ${response.status}`)
+        // console.log(`did mount response ${response.status}`)
         if (!response.ok) {
           throw new Error(`status ${response.status}`);
         }
