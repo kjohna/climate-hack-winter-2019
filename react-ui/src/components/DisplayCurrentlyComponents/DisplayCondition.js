@@ -17,7 +17,7 @@ class DisplayIcon extends Component {
 
 class DisplayRHPercent extends Component {
   render () {
-    const percentValue = this.props.value * 100;
+    const percentValue = Math.round(this.props.value * 100);
     const rHIcon = this.value;
 
     return (

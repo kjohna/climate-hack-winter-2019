@@ -16,6 +16,10 @@ import background01 from "../../img/sky01.jpg";
 import background02 from "../../img/sky02.jpg";
 
 class Body extends Component {
+  set_zip = (zip) => {
+    var zipChoice = zip;
+  }
+
   render() {
     const bg02 = {
       backgroundImage: `url(${background02})`,
@@ -25,14 +29,15 @@ class Body extends Component {
       // height: "700px"
       // paddingTop: "66.67%"
     };
+
     return (
       <div className="body" style={bg02}>
         {/* <img src={background01} style={bg01} /> */}
-        <LocationSearch />
+        <LocationSearch zip={this.set_zip}/>
         <div className="data-display">
           <Graph />
 
-          <DisplayCurrently conditions={conditions} />
+          <DisplayCurrently conditions={conditions} zip={this.set_zip} />
           {/* <div className="display-currently">
             <DisplayCondition type="icon" value={precipIcon} />
             <DisplayCondition type="precip-prob" value=".35" />
