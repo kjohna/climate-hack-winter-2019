@@ -1,21 +1,39 @@
 .display-currently {
   padding-left: 450px;
   display: flex;
+  align-items: center;
+}
+
+.display-currently .conditions {
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
 }
 
-.display-currently h2 {
-  font-size: 1.6rem;
+.display-currently .temps {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.display-currently {
+  font-size: 1.4rem;
 }
 
 .condition-icon {
   margin-bottom: -50px;
 }
 
-.display-percent {
+.rel-humidity .condition-icon {
+  max-height: 30px;
+  margin-right: 6px;
+}
+
+.condition-rh-percent {
   text-align: right;
+  margin-top: 30px;
 }
 
 .display-currently > svg {
