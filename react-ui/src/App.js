@@ -4,8 +4,6 @@ import Header from "./components/HeaderComponents/Header";
 import Body from "./components/BodyComponents/Body";
 import Footer from "./components/FooterComponents/Footer";
 
-import LineChart from "./components/GraphComponents/LineChart";
-
 class App extends Component {
   constructor(props) {
     super(props);
