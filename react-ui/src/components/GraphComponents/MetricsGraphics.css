@@ -1,6 +1,6 @@
 .mg-active-datapoint {
   fill: black;
-  font-size: 0.9rem;
+  font-size: 1.6rem;
   font-weight: 400;
   opacity: 0.8;
 }
@@ -75,10 +75,11 @@ text.mg-barplot-group-label {
 }
 
 .mg-bar-target-element {
-  font-size: 11px;
+  font-size: 1.6rem;
   padding-left: 5px;
   padding-right: 5px;
-  font-weight: 300;
+  font-weight: 700;
+  color: #666666 !important;
 }
 
 .mg-baselines line {

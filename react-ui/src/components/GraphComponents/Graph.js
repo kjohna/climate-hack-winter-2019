@@ -23,8 +23,11 @@ class Graph extends Component {
           x_accessor="date"
           y_accessor={["max", "min"]}
           min_y_from_data="true"
-          show_year_markers="true"
           point_size="4"
+          x_axis="false"
+          y_axis="false"
+          legend={["HI", "LO"]}
+
           // baselines = {}
         />
       </div>

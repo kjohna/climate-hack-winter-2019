@@ -21,12 +21,12 @@ class Body extends Component {
       backgroundImage: `url(${background02})`,
       backgroundSize: "contain",
       // backgroundRepeat: "no-repeat",
-      width: "100%",
-      height: "700px"
+      width: "100%"
+      // height: "700px"
       // paddingTop: "66.67%"
     };
     return (
-      <div className="body" /*style={bg02}*/>
+      <div className="body" style={bg02}>
         {/* <img src={background01} style={bg01} /> */}
         <LocationSearch />
         <div className="data-display">
@@ -41,9 +41,16 @@ class Body extends Component {
           </div> */}
         </div>
         <WeatherAlerts />
-        <div className="map-widget"> <iframe title="temp-map-iframe" src="https://maps.darksky.net/@temperature,42.088,-94.567,4?domain=%22+encodeURIComponent(window.location.href)+%22&auth=1546575960_92b343a42fac1c0b889b8f8662a911fc&embed=true&timeControl=false&fieldControl=false&defaultField=temperature&defaultUnits=_f" width="555px" height="200px"   frameBorder="0"></iframe></div>
-         
-         
+        <div className="map-widget">
+          {" "}
+          <iframe
+            title="temp-map-iframe"
+            src="https://maps.darksky.net/@temperature,42.088,-94.567,4?domain=%22+encodeURIComponent(window.location.href)+%22&auth=1546575960_92b343a42fac1c0b889b8f8662a911fc&embed=true&timeControl=false&fieldControl=false&defaultField=temperature&defaultUnits=_f"
+            width="555px"
+            height="200px"
+            frameBorder="0"
+          />
+        </div>
       </div>
     );
   }
