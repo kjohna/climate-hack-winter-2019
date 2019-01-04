@@ -13,30 +13,19 @@ class Graph extends Component {
   }
 
   render() {
-    // console.log(this.props.past);
-
-    // console.log(this.props.get_temps(33143));
-    // data.forEach(function(each) {
-    //   let tmpObj = {};
-    //   let tmpDate = new Date(each.Date);
-    //   tmpObj[`"Date"`] = `${tmpDate}`;
-    //   tmpObj[`"Low"`] = `${each.Low}`;
-    //   tmpObj[`"High"`] = `${each.High}`;
-    //   cleanData.push(tmpObj);
-    //   console.log(tmpObj);
-    // });
-    // console.log(`cleanData: ${cleanData}`);
-    // console.log(cleanData);
     return (
       <div className="mgraph">
         <MetricsGraphics
-          title="Downloads"
-          description="This graphic shows a time-series of downloads."
+          description="This graphic shows a time-series of temperatures."
           data={this.props.past}
           width={380}
           height={300}
           x_accessor="date"
-          y_accessor="max"
+          y_accessor={["max", "min"]}
+          min_y_from_data="true"
+          show_year_markers="true"
+          point_size="4"
+          // baselines = {}
         />
       </div>
     );
