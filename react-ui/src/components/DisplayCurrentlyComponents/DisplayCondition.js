@@ -13,15 +13,15 @@ class DisplayIcon extends Component {
   }
 }
 
-class DisplayPrecipPercent extends Component {
+class DisplayRHPercent extends Component {
   render () {
     const percentValue = this.props.value * 100;
-    const precipIcon = this.value;
+    const rHIcon = this.value;
 
     return (
       <React.Fragment>
-        <div className="display-percent">
-          <img src={precipIcon}></img>
+        <div className="condition-rh-percent">
+          <img src={rHIcon}></img>
           <h2>{`${percentValue}%`}</h2>
         </div>
       </React.Fragment>
@@ -37,8 +37,8 @@ class DisplayCondition extends Component {
 
     if (type === 'icon') {
       displayFragment = <DisplayIcon value={value} />
-    } else if (type === 'precip-prob') {
-      displayFragment = <DisplayPrecipPercent value={value} />
+    } else if (type === 'rel-humidity') {
+      displayFragment = <DisplayRHPercent value={value} />
     } else {
       console.log("Error in DisplayCondition: unknown type");
     }
