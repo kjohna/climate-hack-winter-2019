@@ -110,7 +110,7 @@ text.mg-barplot-group-label {
 
 .mg-header .mg-chart-description {
   fill: #ccc;
-  font-family: FontAwesome;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 1.2rem;
 }
 
@@ -125,7 +125,8 @@ text.mg-barplot-group-label {
 }
 
 .mg-popover {
-  font-size: 0.95rem;
+  /* font-size: 0.95rem; */
+  font-size: 1.6rem;
 }
 
 .mg-popover-content {
@@ -228,19 +229,19 @@ tspan.hist-symbol {
 }
 
 .mg-line1-color {
-  stroke: #4040e8;
+  stroke: #f7931e;
 }
 
 .mg-hover-line1-color {
-  fill: #4040e8;
+  fill: #f7931e;
 }
 
 .mg-line2-color {
-  stroke: #05b378;
+  stroke: #3fa9f5;
 }
 
 .mg-hover-line2-color {
-  fill: #05b378;
+  fill: #3fa9f5;
 }
 
 .mg-line3-color {
@@ -308,7 +309,7 @@ tspan.hist-symbol {
 }
 
 .mg-line-legend text {
-  font-size: 0.9rem;
+  font-size: 1.6rem;
   font-weight: 300;
   stroke: none;
 }
@@ -382,7 +383,7 @@ tspan.hist-symbol {
 
 .mg-markers text {
   fill: black;
-  font-size: 0.8rem;
+  font-size: 1.6rem;
   opacity: 0.6;
 }
 
@@ -420,7 +421,8 @@ path.mg-confidence-band {
 path.mg-main-line {
   fill: none;
   opacity: 0.8;
-  stroke-width: 1.1px;
+  /* stroke-width: 1.1px; */
+  stroke-width: 8px;
 }
 
 .mg-points circle {
@@ -471,15 +473,15 @@ tspan.mg-points-mono {
 .mg-y-axis line {
   opacity: 1;
   shape-rendering: auto;
-  stroke: #b3b2b2;
-  stroke-width: 1px;
+  stroke: rgba(200, 200, 200, 0.3);
+  stroke-width: 3px;
 }
 
 .mg-x-axis text,
 .mg-y-axis text,
 .mg-histogram .axis text {
-  fill: black;
-  font-size: 0.9rem;
+  fill: rgb(39, 39, 39);
+  font-size: 1.6rem;
   opacity: 0.6;
 }
 
