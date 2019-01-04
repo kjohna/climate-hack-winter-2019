@@ -13,14 +13,12 @@ class Graph extends Component {
   }
 
   render() {
-    // const current= this.props.current.filter(function(temp){return this.})
-    // console.log(this.props.current.temperature);
     return (
       <div className="mgraph">
         <MetricsGraphics
           description="This graphic shows a time-series of temperatures."
           data={this.props.past}
-          width={400}
+          width={380}
           height={300}
           x_accessor="date"
           y_accessor={["max", "min"]}

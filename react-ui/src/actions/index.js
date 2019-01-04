@@ -33,8 +33,8 @@ export const authError = error => ({
 });
 
 export const get_temps = (zip, history) => (dispatch) => {
-
-  console.log(`in "get_temps" for ${JSON.stringify(zip, null, 2)}`);
+  // console.log(`${http}://${host}:${port}/api/weather/${zip}`);
+  // console.log(`in "get_temps" for ${JSON.stringify(zip, null, 2)}`);
   axios
     .get(`${http}://${host}:${port}/api/weather/${zip}`)
     .then((response) => {
