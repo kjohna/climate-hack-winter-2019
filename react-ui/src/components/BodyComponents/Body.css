@@ -28,12 +28,13 @@ html {
   position: relative;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  background-color: rgba(230, 230, 230, 0.6);
+
+  justify-content: space-between;    
+  background-color: rgba(34,34,34,.6);
+  padding: 30px 30px 30px 10px;
+  border: solid 2px #E6E6E6;
   border-radius: 10px;
-  border: solid 2px lightgrey;
-  padding-top: 10px;
-  padding-bottom: 20px;
+
 }
 
 .container {
@@ -51,4 +52,15 @@ html {
 
 .graph-header {
   width: 380px;
+}
+
+.map-widget {
+  padding:0px 0 0 0;
+  margin-top: 30px;
+  border: 2px solid lightgrey;
+  /* -moz-border-radius: 50px; */
+  border-radius: 20px;
+  overflow: hidden;
+  width:100%;
+  height: 198px;
 }
