@@ -33,7 +33,7 @@ class DisplayCurrently extends Component {
     const highTemp = this.state.loaded ? Math.round(this.props.high) : 0;
     const lowTemp = this.state.loaded ? Math.round(this.props.low) : 0;
     const currentRH = this.state.loaded ? this.props.current.humidity : 0;
-    console.log(currentRH);
+    // console.log(currentRH);
 
     return (
       <div className="display-currently">
@@ -54,8 +54,8 @@ class DisplayCurrently extends Component {
   }
 
   render() {
-    console.log("inside render()");
-    console.log(this.props);
+    // console.log("inside render()");
+    // console.log(this.props);
     return (
       <React.Fragment>
         {this.state.loaded ? this.content() : null}
