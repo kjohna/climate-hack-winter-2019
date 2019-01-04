@@ -1,7 +1,11 @@
 .display-currently {
-  padding-left: 400px;
+  margin-left: 390px;
   display: flex;
-  align-items: center;
+  align-items: center;    
+  background-color: rgba(230,230,230,.6);
+  border-radius: 10px;
+  padding: 5px;
+  white-space: nowrap;
 }
 
 .display-currently .conditions {
@@ -24,6 +28,7 @@
 
 .condition-icon {
   margin-bottom: -50px;
+  width: 85px;
 }
 
 .rel-humidity .condition-icon {
