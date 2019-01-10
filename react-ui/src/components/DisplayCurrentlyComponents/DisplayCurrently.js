@@ -5,16 +5,13 @@ import DisplayCondition from './DisplayCondition';
 import DisplayTemp from '../DisplayTempComponents/DisplayTemp';
 import partCloudIcon from "../../img/Cloud-Sun.svg";
 import rHIcon from "../../img/droplet.svg";
-import { connect } from "react-redux";
-import { get_temps } from "../../actions";
+import { connect } from "react-redux"
 
-const zipcode = "33143";
 let count = 0;
 class DisplayCurrently extends Component {
   constructor(props) {
     super(props);
-    this.state={loaded: false}
-    this.props.get_temps(zipcode);
+    this.state={loaded: false};
   }
 
   async componentDidMount() {
@@ -71,7 +68,6 @@ const mapStateToProps = state => ({
   past: state.temps ? state.temps.ra || null : null
 });
 const mapDispatchToProps = dispatch => ({
-  get_temps: zip => dispatch(get_temps(zip))
 });
 
 export default connect(

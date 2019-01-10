@@ -2,19 +2,22 @@ import React, { Component } from 'react';
 import './LocationSearch.css';
 
 class LocationSearch extends Component {
-  // constructor(props){
-  //   super(props);
-  //   this.state.setState({zip : 87106});
-  // }
-
+  constructor(props){
+    super(props)
+    this.state = {
+      zip: 33143
+    }
+  }
+  handleZip = (e) => {
+    this.setState({zip: e.target.value});
+  }
   render () {
     // console.log(this.state);
-    let zip = 33143;
 
     return (
       <div className="location-search">
       <form action="">
-        <input className="location-search-input" type="text" defaultValue="ZIP CODE" value={zip} onBlur={this.props.zip(zip)}></input>
+        <input className="location-search-input" onChange={this.handleZip}   type="number" value={this.state.zip} onBlur={this.props.zip(this.state.zip)}></input>
       </form>
       </div>
     );

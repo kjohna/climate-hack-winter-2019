@@ -14,10 +14,26 @@ import WeatherAlerts from "../WeatherAlertsComponents/WeatherAlerts";
 import conditions from "../GraphComponents/weatherData.json";
 import background01 from "../../img/sky01.jpg";
 import background02 from "../../img/sky02.jpg";
+import { get_temps } from "../../actions";
+import { connect } from "react-redux"
 
 class Body extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loaded: false,
+      zip: this.zipChoice
+    };
+  }
+
   set_zip = (zip) => {
-    var zipChoice = zip;
+    if (this.state.zip !== zip && zip.toString().length === 5) {
+      console.log(`setting zip to ${zip}`)
+      this.props.get_temps(zip)
+      this.setState({
+        zip: zip
+      })
+    }
   }
 
   render() {
@@ -33,11 +49,11 @@ class Body extends Component {
     return (
       <div className="body" style={bg02}>
         {/* <img src={background01} style={bg01} /> */}
-        <LocationSearch zip={this.set_zip}/>
+        <LocationSearch zip={this.set_zip} />
         <div className="data-display">
           <Graph />
 
-          <DisplayCurrently conditions={conditions} zip={this.set_zip} />
+          <DisplayCurrently conditions={conditions} zip={this.state.zip} />
           {/* <div className="display-currently">
             <DisplayCondition type="icon" value={precipIcon} />
             <DisplayCondition type="precip-prob" value=".35" />
@@ -61,4 +77,13 @@ class Body extends Component {
   }
 }
 
-export default Body;
+const mapStateToProps = state => ({
+});
+const mapDispatchToProps = dispatch => ({
+  get_temps: zip => dispatch(get_temps(zip))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Body);
