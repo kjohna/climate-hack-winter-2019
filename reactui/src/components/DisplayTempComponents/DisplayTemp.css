@@ -1,0 +1,15 @@
+.current-temp h2 {
+  color: #e6e6e6;
+  font-size: 1.8rem;
+  margin-top: -30px;
+}
+
+.high-temp h2 {
+  color: #F7931E;
+  font-size: 1.8rem;
+}
+
+.low-temp h2 {
+  color: #3FA9F5;
+  font-size: 1.8rem;
+}

@@ -32,15 +32,15 @@ if (!isDev && cluster.isMaster) {
   server.use(morgan('common'));
    server.use(helmet());  
   // Priority serve any static files.
-  server.use(express.static(path.resolve(__dirname, '../react-ui/build')));
-  server.use(
-    cors({
-      credentials: true,
-      origin: [process.env.CLIENT_URL],
-      allowedHeaders: ['Content-Type', 'Authorization']
+  server.use(express.static('react-ui/build'));
+  // server.use(
+  //   cors({
+  //     credentials: true,
+  //     origin: [process.env.CLIENT_URL],
+  //     allowedHeaders: ['Content-Type', 'Authorization']
       
-    })
-  );
+  //   })
+  // );
   server.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
