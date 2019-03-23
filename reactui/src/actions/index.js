@@ -37,7 +37,7 @@ export const get_temps = (zip, history) => (dispatch) => {
   // console.log(`${http}://${host}:${port}/api/weather/${zip}`);
   // console.log(`in "get_temps" for ${JSON.stringify(zip, null, 2)}`);
   axios
-    .get(`/api/weather/${zip}`)
+    .get(`:443/api/weather/${zip}`)
     .then((response) => {
       // console.log(`in "get_temps" response for ${JSON.stringify(response, null, 2)}`);
       dispatch({
