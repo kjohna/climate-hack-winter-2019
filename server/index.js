@@ -32,7 +32,7 @@ if (!isDev && cluster.isMaster) {
   server.use(morgan('common'));
    server.use(helmet());  
   // Priority serve any static files.
-  server.use(express.static('react-ui/build'));
+  server.use(express.static('reactui/build'));
   // server.use(
   //   cors({
   //     credentials: true,
