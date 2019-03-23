@@ -20,12 +20,13 @@ weatherRouter.get('/:zip', function (req, res) {
   axios
     .get(`https://www.zipcodeapi.com/rest/${process.env.ZIP}/info.json/${zip}/degrees`)
     .then((zresponse) => {
+      console.log(`zresponse ${JSON.stringify(cresponse)}`)
       axios
         .get(`${url}${process.env.DARK_SKY}/${zresponse.data.lat},${zresponse.data.lng}`)
         .then((cresponse) => {
-          // console.log(`currently data currently json ${JSON.stringify(cresponse.data.currently, null, 2)}`);
+          console.log(`currently data currently json ${JSON.stringify(cresponse.data.currently, null, 2)}`);
           const currently = { current: cresponse.data.currently, min: cresponse.data.daily.data[0].temperatureMin, max: cresponse.data.daily.data[0].temperatureMax }
-          // console.log(`currently data: ${cresponse.data}`)
+          console.log(`currently data: ${cresponse.data}`)
           for (i = 1; i <= imax; i++) {
             offset = i * sd
             axios
