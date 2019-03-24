@@ -37,7 +37,7 @@ export const get_temps = (zip, history) => (dispatch) => {
     .get(`${http}${host}:${port}/api/weather/${zip}`)
     // .get(`:443/api/weather/${zip}`)
     .then((response) => {
-      // console.log(`in "get_temps" response for ${JSON.stringify(response, null, 2)}`);
+      console.log(`in "get_temps" response for ${JSON.stringify(response, null, 2)}`);
       // let t = response.data.alert
       // let tc = t.replace(/\n/g,'<br/>')
       // console.log('tc',tc)

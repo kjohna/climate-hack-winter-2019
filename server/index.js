@@ -67,7 +67,7 @@ if (!isDev && cluster.isMaster) {
   });
 
   // All remaining requests return the React app, so it can handle routing.
-  server.get('*', function (request, response) {
+  server.get('/*', function (request, response) {
     response.sendFile(path.resolve(__dirname, '../reactui/build', 'index.html'));
   });
 
