@@ -13,6 +13,7 @@ class Graph extends Component {
   }
 
   render() {
+    if (this.prop.past === null  || this.prop.past === undefined) return null;
     return (
       <div className="mgraph">
         <MetricsGraphics
