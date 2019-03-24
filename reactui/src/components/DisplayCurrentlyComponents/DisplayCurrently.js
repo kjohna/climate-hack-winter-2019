@@ -24,7 +24,7 @@ class DisplayCurrently extends Component {
     // for some reason componentDidMount is being called many times, complete data isn't available until it is called the 2nd time, the next two lines avoid rendering content until complete data is available
     count ++;
     if(count<2){return null};
-    if (this.props.current === undefined) return null;
+    if (this.props.current === undefined || this.props.current === null)  return null;
     // console.log("here");
     // console.log(this.props);
     const currentTemp = this.state.loaded ? Math.round(this.props.current.temperature) : 0;
