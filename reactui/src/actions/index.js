@@ -17,7 +17,7 @@ axios.defaults.withCredentials = false;
 
 let port, host, http;
 if (process.env.NODE_ENV === 'production') {
-  port = 443;
+  port = '';
   host = ''
   http = ''
 } else {
