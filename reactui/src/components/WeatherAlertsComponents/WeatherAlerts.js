@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { Component } from 'react';
 import './WeatherAlerts.css';
+import { connect } from "react-redux"
 
 class WeatherAlerts extends Component {
   // *** Commented out for non-use -Kenny
@@ -17,20 +18,33 @@ class WeatherAlerts extends Component {
   // }
   // *************************************************
 
-  render () {
-
+  render() {
     return (
       <div className="weather-alerts">
         <form action="">
-
-          <h4>This is a Weather Alert! </h4>
-
-          <p>Light rain tomorrow through Tuesday, with high temperatures bottoming out at 68°F on Monday.</p>
+          {this.props.alert !== 'None' ? (
+            <view style={{ flex: 1 }}>
+              <h4>This is a Weather Alert! </h4>
+              <br/>
+              <text>{this.props.alert}</text>
+            </view>
+          ) :
+            (<h5>No Alerts</h5>)}
         </form>
       </div>
     );
   }
 }
 
-// document.write('')
-export default WeatherAlerts;
+
+const mapStateToProps = state => ({
+  alert: state.temps.alert || "Light rain tomorrow through Tuesday, with high temperatures bottoming out at 68°F on Monday."
+});
+const mapDispatchToProps = dispatch => ({
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(WeatherAlerts)
+

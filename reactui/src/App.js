@@ -17,6 +17,23 @@ class App extends Component {
       message: null,
       fetching: true
     };
+
+    const realError = console.error;
+
+    console.error = (...x) => {
+      // console.log(`error: ${x[0]}`)
+      // debugger;
+      if (x[0] === 'Warning: The tag <text> is unrecognized in this browser. If you meant to render a React component, start its name with an uppercase letter.') {
+        console.log('supressing warning for text')
+        return;
+      }
+      if (x[0] === "Warning: The tag <%s> is unrecognized in this browser. If you meant to render a React component, start its name with an uppercase letter.%s") {
+        // console.log('supressing warning for span and text')
+        return;
+      }
+      //                     The tag <text> is unrecognized in this browser. If you meant to render a React component, start its name with an uppercase letter.
+      realError(...x);
+    }
   }
   componentDidMount() {
     fetch("/")
@@ -56,7 +73,7 @@ class App extends Component {
         />
         <Route
           exact path="/test"
-          render = {props => <TestComponent />}
+          render={props => <TestComponent />}
         />
       </div>
     );

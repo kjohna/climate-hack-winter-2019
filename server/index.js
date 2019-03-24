@@ -13,6 +13,7 @@ const isDev = process.env.NODE_ENV !== 'production';
 const PORT = process.env.PORT || 5000;
 const weatherEndpoints = require('./endpoints/weatherEndPoints');
 
+console.log(`isDev: ${isDev}`)
 // Multi-process to utilize all CPU cores.
 if (!isDev && cluster.isMaster) {
   console.error(`Node cluster master ${process.pid} is running`);
@@ -30,28 +31,34 @@ if (!isDev && cluster.isMaster) {
   const server = express();
   server.use(bodyParser.json());
   server.use(morgan('common'));
-   server.use(helmet());  
+  server.use(helmet());
   // Priority serve any static files.
-  server.use(express.static('reactui/build'));
-  // server.use(
-  //   cors({
-  //     credentials: true,
-  //     origin: [process.env.CLIENT_URL],
-  //     allowedHeaders: ['Content-Type', 'Authorization']
-      
-  //   })
-  // );
-  server.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-  })
+  if (!isDev) {
+    console.log('serving build')
+    server.use(express.static('reactui/build'));
+  }
+  else {
+    server.use(
+      cors({
+        credentials: true,
+        origin: [process.env.CLIENT_URL],
+        allowedHeaders: ['Content-Type', 'Authorization']
+
+      })
+    );
+
+    server.use(function (req, res, next) {
+      res.header("Access-Control-Allow-Origin", "*");
+      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+      next();
+    })
+  }
   // server.use(function(req, res, next) {
   //   res.header('Access-Control-Allow-Origin', '*');
   //   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   //   next();
   // });
-  
+
   server.use('/api/weather', weatherEndpoints);
   // Answer API requests.
   server.get('/api', function (req, res) {
@@ -60,11 +67,11 @@ if (!isDev && cluster.isMaster) {
   });
 
   // All remaining requests return the React app, so it can handle routing.
-  server.get('*', function(request, response) {
+  server.get('*', function (request, response) {
     response.sendFile(path.resolve(__dirname, '../reactui/build', 'index.html'));
   });
 
   server.listen(PORT, function () {
-    console.error(`Node ${isDev ? 'dev server' : 'cluster worker '+process.pid}: listening on port ${PORT}`);
+    console.error(`Node ${isDev ? 'dev server' : 'cluster worker ' + process.pid}: listening on port ${PORT}`);
   });
 }
