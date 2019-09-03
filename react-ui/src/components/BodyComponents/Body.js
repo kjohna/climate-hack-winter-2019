@@ -27,8 +27,13 @@ class Body extends Component {
   }
 
   set_zip = (zip) => {
+<<<<<<< HEAD
     if (this.state.zip !== zip && /(\d{5}$)|(\d{5}-\d{4})$/.test(zip)) {
       // console.log(`setting zip to ${zip}`)
+=======
+    if (this.state.zip !== zip && zip.toString().length === 5) {
+      console.log(`setting zip to ${zip}`)
+>>>>>>> 4f7e144c0fd3759d566cae1fdf4d676294de2c97
       this.props.get_temps(zip)
       this.setState({
         zip: zip
@@ -81,8 +86,11 @@ class Body extends Component {
 }
 
 const mapStateToProps = state => ({
+<<<<<<< HEAD
   lat: state.temps.location ? state.temps.location.lat : null,
   lng: state.temps.location ? state.temps.location.lng : null
+=======
+>>>>>>> 4f7e144c0fd3759d566cae1fdf4d676294de2c97
 });
 const mapDispatchToProps = dispatch => ({
   get_temps: zip => dispatch(get_temps(zip))
