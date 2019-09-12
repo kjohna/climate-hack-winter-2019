@@ -7,11 +7,15 @@ const numCPUs = require('os').cpus().length;
 var dotenv = require('dotenv');
 dotenv.load();
 
+var DEBUGMODE = true;
+
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const isDev = process.env.NODE_ENV !== 'production';
 const PORT = process.env.PORT || 5000;
 const weatherEndpoints = require('./endpoints/weatherEndPoints');
+
+
 
 console.log(`isDev: ${isDev}`)
 // Multi-process to utilize all CPU cores.
@@ -75,3 +79,4 @@ if (!isDev && cluster.isMaster) {
     console.error(`Node ${isDev ? 'dev server' : 'cluster worker ' + process.pid}: listening on port ${PORT}`);
   });
 }
+module.exports = DEBUGMODE

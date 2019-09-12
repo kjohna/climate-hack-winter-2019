@@ -6,10 +6,10 @@ const colors = require("../util/colors")
 const http = rateLimit(
   axios.create({
     headers: {
-      // get: {
-      //   // can be common or any other method
-      //   token: process.env.GOVV2
-      // }
+      get: {
+        // can be common or any other method
+        token: process.env.GOVV2
+      }
     }
   }),
   { maxRequests: 1, perMilliseconds: 400 }
@@ -20,7 +20,7 @@ const http = rateLimit(
 async function getMinMax(date_, station) {
   const date = new Date(date_)
   const year = date.getFullYear()
-  //_log(`getMinMax date year ${year}`) 
+  _log(`getMinMax date year ${year}`) 
   //  station ${JSON.stringify(station, null, 2)}`)
   let promise = new Promise((resolve, reject) => {
     const url = `https://www.ncdc.noaa.gov/cdo-web/api/v2/data?stationid=${station.stationid}&datasetid=GHCND

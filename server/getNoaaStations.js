@@ -1,18 +1,21 @@
-const pool = require("./pgClient").pool;
+const pool = require("./pgClient").pool
 const _log = require("../util/_log")
 const colors = require("../util/colors")
 
 
 async function getNoaaStations(lat, lng) {
-  console.log(`getNoaaStations lat ${lat}  lng ${lng}`)
+  _log('before')
+  console.log(`wtf getNoaaStations lat ${lat}  lng ${lng}`)
+  _log('after')
+  const limit = 30
   let promise = new Promise((resolve, reject) => {
     pool
       .query(
-        `select latitude, longitude from station group by latitude, longitude order by MIN(ABS(latitude - ${lat}) + ABS(longitude - ${lng}));`
+        `select latitude, longitude from station group by latitude, longitude order by MIN(ABS(latitude - ${lat}) + ABS(longitude - ${lng})) limit ${limit};`
       )
       .then(res => {
         const stations = [];
-        for (ri in res.rows.slice(0,20)) {
+        for (ri in res.rows) {
           console.log('getNoaaStations ri:', JSON.stringify(res.rows[ri], null,2))
           pool
             .query(
@@ -39,7 +42,7 @@ async function getNoaaStations(lat, lng) {
               // console.log(colors.Blue  + `o:, ${o}` + colors.Reset);
               stations.push(o)
               _log(`stations length: ${stations.length}`)
-              if (stations.length == 20)  {  // maximum of 20 station id sets
+              if (stations.length == limit)  {  // maximum of 30 station id sets
                 _log(colors.Green + 'getNoaaStations resolving stations' + colors.Reset)
                 // _log(stations)
                 resolve(stations)

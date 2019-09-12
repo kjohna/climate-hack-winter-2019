@@ -3,6 +3,7 @@ const express = require("express");
 const axios = require("axios");
 //const rateLimit = require("axios-rate-limit");
 const getDateData = require("../getDateData")
+const colors = require("../../util/colors")
 
 
 const imax = 20;
@@ -200,124 +201,97 @@ weatherRouter.get("/:zip", function (req, res) {
                   .then(stations => {
                     _log(colors.Green + "getStations then" + colors.Reset)
                     for (yearOffset = -1; yearOffset <= imax; yearOffset++) {
-                      stations.data(new Date(year - yearOffset, 0, 1))
-                        .then(dateData => {
+                      sleep(yearOffset * 400).then(() => {
+                        stations.data(new Date(year - yearOffset, 0, 1))
+                          .then(dateData => {
 
-                          // }
-                          console.log(`dateData`, JSON.stringify(dateData, null, 2))
-                          min = dateData.min
-                          max = dateData.max
-                          min_key = dateData.min_key
-                          // d = (max > 150) ? 10 : 1
-                          const d = 10
-
-
-                          min_ = min * 1.8 / d + 32;
-                          max_ = max * 1.8 / d + 32;
-                          console.log(`i  year ${dataDate.date.year} raw min ${min} ${min_} max ${max} ${max_} min_key ${min_key} records.data.results[min_key]
-                                  ${JSON.stringify(
-                            records.data.results[min_key],
-                            null,
-                            2
-                          )}`);
-                          // const history_url = `https://www.ncei.noaa.gov/access/services/data/v1?&
-                          // boundingBox=${north},${west},${south},${east}&dataset=monthly-summaries&
-                          //dataTypes=MLY-TMAX-NORMAL,MLY-TMIN-NORMAL&
-                          //startDate=${startDate}&endDate=${endDate}&includeAttributes=true&format=json`;
-
-                          // .get(`${url}${process.env.DARK_SKY}/${lat},${lng},${ts - offset}`)
-                          // startDate = new Date(year - i, month - 1, day);
-                          // syear = startDate.getFullYear();
-                          // smonth = startDate.getMonth();
-                          // sday = startDate.getDate();
-                          // startDate = `{year} `;
-                          // const endDate = new Date(year - i, month, day);
-                          // if (response.data) {
-                          //   date.setTime(response.data.daily.data[0].time * 1000);
-                          // years_done[i] = true
-                          //console.log('yearDone test (should be false)', yearDone(ra, yearOffset))
-                          // ra[yearOffset - 1] = {
-                          //   date: (year - yearOffset).toString(),
-                          //   min: min_,
-                          //   max: max_,
-                          //   zip
-                          // };
-                          ra.push({ date: dateData.date, min: _min, max: _max, zip })
-                          //console.log('yearDone test (should be true)', yearDone(ra, yearOffset))
-                          done = isDone(ra)
-                          // console.log(
-                          //   `i ${i} j ${j} ra.length ${
-                          //     ra.length
-                          //   } imax ${imax}`
-                          // );
-                          if (done) {
-                            ra.sort(function (a, b) {
-                              return b.date - a.date;
-                            });
-                            // for (k = 1;k<=j;k++) {
-                            //   console.log(`ra[${k-1}]: ${ra[k-1].date} ${ra[k-1].min} - ${ra[k-1].max}`)
                             // }
-                            console.log(
-                              `200 alert ${alert_description}`
-                            );
-                            console.log(
-                              `200 currently temperature: ${
-                              currently.current.temperature
-                              }
+                            console.log(`dateData`, JSON.stringify(dateData, null, 2))
+                            min = dateData.min
+                            max = dateData.max
+                            min_key = dateData.min_key
+                            // d = (max > 150) ? 10 : 1
+                            const d = 10
+
+
+                            min_ = min * 1.8 / d + 32;
+                            max_ = max * 1.8 / d + 32;
+                            console.log(`i  year ${dataDate.date.year} raw min ${min} ${min_} max ${max} ${max_} min_key ${min_key} records.data.results[min_key]
+                                  ${JSON.stringify(
+                              records.data.results[min_key],
+                              null,
+                              2
+                            )}`);
+                            ra.push({ date: dateData.date, min: _min, max: _max, zip })
+                            //console.log('yearDone test (should be true)', yearDone(ra, yearOffset))
+
+                            if (done) {
+                              ra.sort(function (a, b) {
+                                return b.date - a.date;
+                              });
+                              console.log(
+                                `200 alert ${alert_description}`
+                              );
+                              console.log(
+                                `200 currently temperature: ${
+                                currently.current.temperature
+                                }
                         humidity: ${currently.current.humidity}
                         ra[0]: ${JSON.stringify(ra[0], null, 2)}
                         `
-                            );
-                            try {
-                              res.status(200).json({
-                                min: currently.min,
-                                max: currently.max,
-                                currently: currently.current,
-                                ra,
-                                location: { lat, lng },
-                                alert: alert_description
-                              });
-                            }
-                            catch (err) { }
-                          } // if j == imax
-                          // console.log('returning after res(200)')
-                          return
-                          // })
-                        })
-                        .catch(err => {
-                          const throttle = (err.message !== undefined && err.message.indexOf('429') >= 0)
-                          if (!throttle) {
-                            try {
-                              console.log(`ds err: ${JSON.stringify(err, null, 2)}`);
-                              console.log(`err short name ${err.short_name} short state ${err.short_state}`)
-                            }
-                            catch (e) { }
-
-
-                            console.log(
-                              `ds err message ${err.message} name ${err.name} stack: ${
-                              err.stack
-                              }`
-
-                            );
-                          }
-                          if (throttle) {
-                            console.log(`throttling i ${yearOffset}`)
-                            yearOffset -= 1;
-                            sleep(500);
-                          }
-                          else {
-                            res.status(500).json({
-                              error: err.message
-                            })
+                              );
+                              try {
+                                res.status(200).json({
+                                  min: currently.min,
+                                  max: currently.max,
+                                  currently: currently.current,
+                                  ra,
+                                  location: { lat, lng },
+                                  alert: alert_description
+                                });
+                              }
+                              catch (err) { }
+                            } // if j == imax
+                            // console.log('returning after res(200)')
                             return
-                          }
-                          // continue
-                        });
+                            // })
+                          })
+                          .catch(err => {
+                            const throttle = (err.message !== undefined && err.message.indexOf('429') >= 0)
+                            if (!throttle) {
+                              try {
+                                console.log(`ds err: ${JSON.stringify(err, null, 2)} stack ${err.stack}`);
+                                console.log(`err short name ${err.short_name} short state ${err.short_state}`)
+                              }
+                              catch (e) { }
+
+
+                              console.log(
+                                `ds err message ${err.message} name ${err.name} stack: ${
+                                err.stack
+                                }`
+
+                              );
+                            }
+                            if (throttle) {
+                              console.log(`throttling i ${yearOffset}`)
+                              yearOffset -= 1;
+                              sleep(500);
+                            }
+                            else {
+                              res.status(500).json({
+                                error: err.message
+                              })
+                              return
+                            }
+                            // continue
+                          });
+                      }) // sleep
                       if (done) {
                         console.log('for ss break')
-                        break;
+                         break;
                       }
+
                     } // for yearoffset
                   }) // getDateData constructor 
 
@@ -325,28 +299,7 @@ weatherRouter.get("/:zip", function (req, res) {
                   console.log('for sleep return')
                   return
                 }
-
-
               })   // axious spread
-              // .catch(err => {
-              //   console.log(`"zip api" ${err}`);
-              //   console.log(`stack: ${err.stack}`);
-              //   var vDebug = "";
-              //   for (var prop in err) {
-              //     vDebug += "property: " + prop + " value: [" + err[prop] + "]\n";
-              //   }
-              //   vDebug += "toString(): " + " value: [" + err.toString() + "]";
-              //   console.log(vDebug);
-              //   console.log(`stack: ${err.stack}`);
-              //   res.status(502);
-
-              // })
-              // .catch(err => {
-              //   if (err === radone) {
-              //     console.log('radone return')
-              //     return
-              //   }
-              // })
             )
         }) // get api.weather
 
@@ -355,41 +308,5 @@ weatherRouter.get("/:zip", function (req, res) {
   })  // get gurl
 }) // end of weatherRouter.get
 
-//   const weatherData = weather
-//     .getTimeMachine("Brooklyn Bridge", "+3y"
-//     // .getTimeMachine(zip, `+${i}y`
-//     // , null, null, [
-//       // , "", "",
-//       // "minutely",
-//       // "hourly",
-//       // "currently",
-//       // "alerts",
-//       // "flags"
-//     //
-//     )
-//     .then(response => {
-//       // json = JSON.parse(response)
-//       //console.log(JSON.stringify(response, null, 2))
-//       console.log('in response')
-//       console.log(response)
-//     })
-//     .catch(error => {
-//       console.log('in error')
-//       console.log(`error ${error}`);
-//     });
-//   print('past weather data')
-//   print(weatherData)
-// }
-// })
-// http.get({
-//   hostname:`${url}${key}/`
-//   port: 80,
-//   path: '/',
-//   agent: false  // create a new agent just for this one request
-// },
-// (res) => {
-//   // Do stuff with response
-// });
-// });
 
 module.exports = weatherRouter;
