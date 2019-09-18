@@ -3,21 +3,21 @@ const _log = require("../util/_log")
 const colors = require("../util/colors")
 
 
-async function getNoaaStations(lat, lng) {
+async function getNoaaStations(lat, lng, p = pool) {
   _log('before')
-  console.log(`wtf getNoaaStations lat ${lat}  lng ${lng}`)
+  // console.log(`wtf getNoaaStations lat ${lat}  lng ${lng}`)
   _log('after')
   const limit = 30
   let promise = new Promise((resolve, reject) => {
-    pool
+    p
       .query(
         `select latitude, longitude from station group by latitude, longitude order by MIN(ABS(latitude - ${lat}) + ABS(longitude - ${lng})) limit ${limit};`
       )
       .then(res => {
         const stations = [];
         for (ri in res.rows) {
-          console.log('getNoaaStations ri:', JSON.stringify(res.rows[ri], null,2))
-          pool
+          // console.log('getNoaaStations ri:', JSON.stringify(res.rows[ri], null,2))
+          p
             .query(
               `select * from station where ABS(latitude - ${
                 res.rows[ri]["latitude"]
@@ -59,7 +59,7 @@ async function getNoaaStations(lat, lng) {
         console.log("failed:" + err);
         reject("find min query failed:" + err);
       });
-  });
+  }); // new promise
   return promise;
 }
 

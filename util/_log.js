@@ -25,6 +25,7 @@ _log = (function (undefined) {
           : extractLineNumberFromStack(this.stack)
         )
       };
+      console.log('_logno error suffix', suffix)
     }
     catch (err) {
       console.log('_log error', err)

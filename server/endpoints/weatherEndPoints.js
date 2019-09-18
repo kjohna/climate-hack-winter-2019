@@ -201,7 +201,7 @@ weatherRouter.get("/:zip", function (req, res) {
                   .then(stations => {
                     _log(colors.Green + "getStations then" + colors.Reset)
                     for (yearOffset = -1; yearOffset <= imax; yearOffset++) {
-                      sleep(yearOffset * 400).then(() => {
+                      // sleep(yearOffset * 400).then(() => {
                         stations.data(new Date(year - yearOffset, 0, 1))
                           .then(dateData => {
 
@@ -286,7 +286,7 @@ weatherRouter.get("/:zip", function (req, res) {
                             }
                             // continue
                           });
-                      }) // sleep
+                      // }) // sleep
                       if (done) {
                         console.log('for ss break')
                          break;

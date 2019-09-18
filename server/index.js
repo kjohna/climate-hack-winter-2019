@@ -4,8 +4,8 @@ const morgan = require('morgan');
 const helmet = require('helmet');
 const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
-var dotenv = require('dotenv');
-dotenv.load();
+var dotenv = require('dotenv').config({path: "/home/mark/lambda/climate-hack-winter-2019/kenneth/climate-hack-winter-2019/.env"});
+// dotenv.load();
 
 var DEBUGMODE = true;
 
@@ -42,6 +42,7 @@ if (!isDev && cluster.isMaster) {
     server.use(express.static('reactui/build'));
   }
   else {
+    DEBUGMODE = true;
     server.use(
       cors({
         credentials: true,
