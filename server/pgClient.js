@@ -1,8 +1,11 @@
 //const DATABASE_URL = "postgres://cbzzmuglaifvrs:79cd4150369272dc8afc938b4c8c85430cf8c5f30a3916d9ec45a51f7b08729e@ec2-174-129-225-9.compute-1.amazonaws.com:5432/da4fit45q0u0p0"
 // const pg = require("pg");
 const { Pool } = require('pg');
-const dotenv = require('dotenv');
-dotenv.load();
+// const dotenv = require('dotenv').config({ path: '/home/mark/lambda/climate-hack-winter-2019/kenneth/climate-hack-winter-2019' })
+
+console.log('type DEBUGMODE', typeof DEBUGMODE)
+console.log('value DEBUGMODE', DEBUGMODE)
+
 
 // const DATABASE_URL = process.env.DATABASE_URL
 // const DATABASE_URL = "postgres://juwwvohcorbolo:ce3d8c3e671044f8e15c880db71ce26146826e3f126da53a55788f7f0a7a54ae@ec2-23-23-173-30.compute-1.amazonaws.com:5432/d4l0sqaog7kpe0"
