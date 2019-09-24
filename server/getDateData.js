@@ -13,31 +13,31 @@ class getDateData {
   }
   async getStations() {
     try {
-      _log(colors.Red + "in getDateData getStations" + colors.Reset )  
+      _log(colors.Red + "in getDateData getStations" + colors.Reset)
     }
-    catch(err) {
+    catch (err) {
       console.log('_log err', err)
     }
     let promise = new Promise((resolve, reject) => {
       try {
-        _log(colors.Red + "in getDateData getStations Promise" + colors.Reset )  
+        _log(colors.Red + "in getDateData getStations Promise" + colors.Reset)
       }
-      catch(err) {
+      catch (err) {
         console.log('_log err', err)
       }
       getNoaaStations(this.lat, this.lng)
-      .then(stationSets => {
-        this.stationSets = stationSets
-        _log('got stations length:', this.stationSets.lenght)
-        resolve(this)
-      })
-      .catch(err => {
-        this.stationSets = null
-        reject("couldn't get stations:" + err)
-      })
+        .then(stationSets => {
+          this.stationSets = stationSets
+          _log('got stations length:', this.stationSets.lenght)
+          return resolve(this)
+        })
+        .catch(err => {
+          this.stationSets = null
+          return reject("couldn't get stations:" + err)
+        })
     })
-    return promise  
-  } 
+    return promise
+  }
   async data(date) {
     console.log(`data date`, date)
     const promise = new Promise((resolve, reject) => {
@@ -55,21 +55,21 @@ class getDateData {
               done = true
               _log(`found year ${year}`)
               getMinMax(date, this.stationSets[ss][si])
-              .then(minMax => {
-                _log(`resolving minMax ${JSON.stringify(minMax, null, 2)}`)
-                resolve(minMax)
-              })
-              .catch(err => {
-                _log('getMinMax', err)
-                reject("can't get minMax" + err)
-              })
+                .then(minMax => {
+                  _log(`resolving minMax ${JSON.stringify(minMax, null, 2)}`)
+                  resolve(minMax)
+                })
+                .catch(err => {
+                  _log('getMinMax', err)
+                  reject("can't get minMax" + err)
+                })
               break
             }
           } // for si
-         if (done) break
+          if (done) break
         } // for ss
         // if (!done) reject("year not found")
-      } 
+      }
       catch (err) {
         // _log(err.stack)
         _log(err)

@@ -1,0 +1,569 @@
+
+{
+  "header": {
+    "reportVersion": 1,
+    "event": "Allocation failed - JavaScript heap out of memory",
+    "trigger": "FatalError",
+    "filename": "report.20190919.180540.15612.0.001.json",
+    "dumpEventTime": "2019-09-19T18:05:40Z",
+    "dumpEventTimeStamp": "1568930740912",
+    "processId": 15612,
+    "cwd": "/home/mark/lambda/climate-hack-winter-2019/kenneth/climate-hack-winter-2019",
+    "commandLine": [
+      "/snap/node/2513/bin/node",
+      "util/writeHiLoToDb.js"
+    ],
+    "nodejsVersion": "v12.10.0",
+    "glibcVersionRuntime": "2.23",
+    "glibcVersionCompiler": "2.23",
+    "wordSize": 64,
+    "arch": "x64",
+    "platform": "linux",
+    "componentVersions": {
+      "node": "12.10.0",
+      "v8": "7.6.303.29-node.16",
+      "uv": "1.31.0",
+      "zlib": "1.2.11",
+      "brotli": "1.0.7",
+      "ares": "1.15.0",
+      "modules": "72",
+      "nghttp2": "1.39.2",
+      "napi": "4",
+      "llhttp": "1.1.4",
+      "http_parser": "2.8.0",
+      "openssl": "1.1.1c",
+      "cldr": "35.1",
+      "icu": "64.2",
+      "tz": "2019a",
+      "unicode": "12.1"
+    },
+    "release": {
+      "name": "node",
+      "headersUrl": "https://nodejs.org/download/release/v12.10.0/node-v12.10.0-headers.tar.gz",
+      "sourceUrl": "https://nodejs.org/download/release/v12.10.0/node-v12.10.0.tar.gz"
+    },
+    "osName": "Linux",
+    "osRelease": "4.15.0-62-generic",
+    "osVersion": "#69-Ubuntu SMP Wed Sep 4 20:55:53 UTC 2019",
+    "osMachine": "x86_64",
+    "cpus": [
+      {
+        "model": "Intel(R) Core(TM) i7-6820HK CPU @ 2.70GHz",
+        "speed": 3263,
+        "user": 16877500,
+        "nice": 20800,
+        "sys": 9329000,
+        "idle": 263822200,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i7-6820HK CPU @ 2.70GHz",
+        "speed": 3234,
+        "user": 35284300,
+        "nice": 45400,
+        "sys": 4776600,
+        "idle": 253658700,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i7-6820HK CPU @ 2.70GHz",
+        "speed": 3269,
+        "user": 19977500,
+        "nice": 14100,
+        "sys": 4739900,
+        "idle": 269143000,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i7-6820HK CPU @ 2.70GHz",
+        "speed": 3285,
+        "user": 90298200,
+        "nice": 114900,
+        "sys": 4367300,
+        "idle": 197629200,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i7-6820HK CPU @ 2.70GHz",
+        "speed": 3302,
+        "user": 21782600,
+        "nice": 68000,
+        "sys": 5223100,
+        "idle": 266650200,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i7-6820HK CPU @ 2.70GHz",
+        "speed": 3282,
+        "user": 20588200,
+        "nice": 28400,
+        "sys": 5086200,
+        "idle": 268788000,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i7-6820HK CPU @ 2.70GHz",
+        "speed": 3243,
+        "user": 78102800,
+        "nice": 55500,
+        "sys": 4372700,
+        "idle": 208091800,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i7-6820HK CPU @ 2.70GHz",
+        "speed": 3279,
+        "user": 134530600,
+        "nice": 24800,
+        "sys": 4265000,
+        "idle": 153919200,
+        "irq": 0
+      }
+    ],
+    "networkInterfaces": [
+      {
+        "name": "lo",
+        "internal": true,
+        "mac": "00:00:00:00:00:00",
+        "address": "127.0.0.1",
+        "netmask": "255.0.0.0",
+        "family": "IPv4"
+      },
+      {
+        "name": "wlp60s0",
+        "internal": false,
+        "mac": "9c:b6:d0:0f:e7:15",
+        "address": "192.168.1.66",
+        "netmask": "255.255.255.0",
+        "family": "IPv4"
+      },
+      {
+        "name": "lxdbr0",
+        "internal": false,
+        "mac": "8a:2f:4f:39:ea:b3",
+        "address": "10.52.204.1",
+        "netmask": "255.255.255.0",
+        "family": "IPv4"
+      },
+      {
+        "name": "lo",
+        "internal": true,
+        "mac": "00:00:00:00:00:00",
+        "address": "::1",
+        "netmask": "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+        "family": "IPv6",
+        "scopeid": 0
+      },
+      {
+        "name": "wlp60s0",
+        "internal": false,
+        "mac": "9c:b6:d0:0f:e7:15",
+        "address": "2600:1700:9be0:4860::7be",
+        "netmask": "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+        "family": "IPv6",
+        "scopeid": 0
+      },
+      {
+        "name": "wlp60s0",
+        "internal": false,
+        "mac": "9c:b6:d0:0f:e7:15",
+        "address": "2600:1700:9be0:4860:c0e1:5c32:9cec:cfb7",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 0
+      },
+      {
+        "name": "wlp60s0",
+        "internal": false,
+        "mac": "9c:b6:d0:0f:e7:15",
+        "address": "2600:1700:9be0:4860:3cb5:d25e:2c4f:ccf0",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 0
+      },
+      {
+        "name": "wlp60s0",
+        "internal": false,
+        "mac": "9c:b6:d0:0f:e7:15",
+        "address": "fe80::77a9:e8aa:f343:2f4b",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 3
+      },
+      {
+        "name": "lxdbr0",
+        "internal": false,
+        "mac": "8a:2f:4f:39:ea:b3",
+        "address": "fd42:a785:3ba4:b56f::1",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 0
+      },
+      {
+        "name": "lxdbr0",
+        "internal": false,
+        "mac": "8a:2f:4f:39:ea:b3",
+        "address": "fe80::882f:4fff:fe39:eab3",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 4
+      }
+    ],
+    "host": "mark-Alienware-17-R3"
+  },
+  "javascriptStack": {
+    "message": "No stack.",
+    "stack": [
+      "Unavailable."
+    ]
+  },
+  "nativeStack": [
+    {
+      "pc": "0x0000000000b0e721",
+      "symbol": "report::TriggerNodeReport(v8::Isolate*, node::Environment*, char const*, char const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, v8::Local<v8::String>) [/snap/node/2513/bin/node]"
+    },
+    {
+      "pc": "0x00000000009dea9d",
+      "symbol": "node::OnFatalError(char const*, char const*) [/snap/node/2513/bin/node]"
+    },
+    {
+      "pc": "0x0000000000b4134e",
+      "symbol": "v8::Utils::ReportOOMFailure(v8::internal::Isolate*, char const*, bool) [/snap/node/2513/bin/node]"
+    },
+    {
+      "pc": "0x0000000000b415a2",
+      "symbol": "v8::internal::V8::FatalProcessOutOfMemory(v8::internal::Isolate*, char const*, bool) [/snap/node/2513/bin/node]"
+    },
+    {
+      "pc": "0x0000000000d073f5",
+      "symbol": " [/snap/node/2513/bin/node]"
+    },
+    {
+      "pc": "0x0000000000d07a67",
+      "symbol": "v8::internal::Heap::RecomputeLimits(v8::internal::GarbageCollector) [/snap/node/2513/bin/node]"
+    },
+    {
+      "pc": "0x0000000000d13ee5",
+      "symbol": "v8::internal::Heap::PerformGarbageCollection(v8::internal::GarbageCollector, v8::GCCallbackFlags) [/snap/node/2513/bin/node]"
+    },
+    {
+      "pc": "0x0000000000d14e3e",
+      "symbol": "v8::internal::Heap::CollectGarbage(v8::internal::AllocationSpace, v8::internal::GarbageCollectionReason, v8::GCCallbackFlags) [/snap/node/2513/bin/node]"
+    },
+    {
+      "pc": "0x0000000000d17ca9",
+      "symbol": "v8::internal::Heap::AllocateRawWithRetryOrFail(int, v8::internal::AllocationType, v8::internal::AllocationAlignment) [/snap/node/2513/bin/node]"
+    },
+    {
+      "pc": "0x0000000000cddb07",
+      "symbol": "v8::internal::Factory::NewFillerObject(int, bool, v8::internal::AllocationType) [/snap/node/2513/bin/node]"
+    },
+    {
+      "pc": "0x0000000001013408",
+      "symbol": "v8::internal::Runtime_AllocateInYoungGeneration(int, unsigned long*, v8::internal::Isolate*) [/snap/node/2513/bin/node]"
+    },
+    {
+      "pc": "0x0000000001396c79",
+      "symbol": " [/snap/node/2513/bin/node]"
+    }
+  ],
+  "javascriptHeap": {
+    "totalMemory": 2179313664,
+    "totalCommittedMemory": 2174256976,
+    "usedMemory": 2164994960,
+    "availableMemory": 29742160,
+    "memoryLimit": 2197815296,
+    "heapSpaces": {
+      "read_only_space": {
+        "memorySize": 262144,
+        "committedMemory": 31744,
+        "capacity": 261832,
+        "used": 31432,
+        "available": 230400
+      },
+      "new_space": {
+        "memorySize": 14155776,
+        "committedMemory": 9943128,
+        "capacity": 7069464,
+        "used": 3735848,
+        "available": 3333616
+      },
+      "old_space": {
+        "memorySize": 2126360576,
+        "committedMemory": 2125985952,
+        "capacity": 2123794400,
+        "used": 2123187352,
+        "available": 607048
+      },
+      "code_space": {
+        "memorySize": 425984,
+        "committedMemory": 248416,
+        "capacity": 207488,
+        "used": 207488,
+        "available": 0
+      },
+      "map_space": {
+        "memorySize": 528384,
+        "committedMemory": 466936,
+        "capacity": 308560,
+        "used": 308560,
+        "available": 0
+      },
+      "large_object_space": {
+        "memorySize": 37531648,
+        "committedMemory": 37531648,
+        "capacity": 37520824,
+        "used": 37520824,
+        "available": 0
+      },
+      "code_large_object_space": {
+        "memorySize": 49152,
+        "committedMemory": 49152,
+        "capacity": 3456,
+        "used": 3456,
+        "available": 0
+      },
+      "new_large_object_space": {
+        "memorySize": 0,
+        "committedMemory": 0,
+        "capacity": 7069464,
+        "used": 0,
+        "available": 7069464
+      }
+    }
+  },
+  "resourceUsage": {
+    "userCpuSeconds": 68.1814,
+    "kernelCpuSeconds": 1.72505,
+    "cpuConsumptionPercent": 303.941,
+    "maxRss": 2343034880,
+    "pageFaults": {
+      "IORequired": 8,
+      "IONotRequired": 700258
+    },
+    "fsActivity": {
+      "reads": 642,
+      "writes": 16
+    }
+  },
+  "uvthreadResourceUsage": {
+    "userCpuSeconds": 20.3757,
+    "kernelCpuSeconds": 0.477022,
+    "cpuConsumptionPercent": 90.6638,
+    "fsActivity": {
+      "reads": 642,
+      "writes": 16
+    }
+  },
+  "libuv": [
+  ],
+  "environmentVariables": {
+    "CONDA_BACKUP_GCC": "/home/mark/anaconda3/bin/x86_64-conda_cos6-linux-gnu-gcc",
+    "LESSOPEN": "| /usr/bin/lesspipe %s",
+    "GJS_DEBUG_TOPICS": "JS ERROR;JS LOG",
+    "CONDA_BACKUP_RANLIB": "/home/mark/anaconda3/bin/x86_64-conda_cos6-linux-gnu-ranlib",
+    "CONDA_BACKUP_STRIP": "/home/mark/anaconda3/bin/x86_64-conda_cos6-linux-gnu-strip",
+    "USER": "mark",
+    "SNAP_COMMON": "/var/snap/node/common",
+    "SNAP_INSTANCE_KEY": "",
+    "XDG_SEAT": "seat0",
+    "CONDA_BACKUP_GXX": "/home/mark/anaconda3/bin/x86_64-conda_cos6-linux-gnu-g++",
+    "TEXTDOMAIN": "im-config",
+    "XDG_SESSION_TYPE": "x11",
+    "LD_LIBRARY_PATH": "/usr/local/cuda-10.0/lib64:",
+    "SHLVL": "1",
+    "HOME": "/home/mark",
+    "OLDPWD": "/home/mark/lambda/climate-hack-winter-2019/kenneth/climate-hack-winter-2019/util",
+    "SNAP_LIBRARY_PATH": "/var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd/void",
+    "QT4_IM_MODULE": "xim",
+    "CONDA_SHLVL": "0",
+    "DESKTOP_SESSION": "ubuntu",
+    "SNAP_USER_DATA": "/home/mark/snap/node/2513",
+    "CONDA_BACKUP_CC": "/home/mark/anaconda3/bin/x86_64-conda_cos6-linux-gnu-cc",
+    "CONDA_BACKUP_GCC_AR": "/home/mark/anaconda3/bin/x86_64-conda_cos6-linux-gnu-gcc-ar",
+    "F90": "/home/mark/anaconda3/bin/x86_64-conda_cos6-linux-gnu-gfortran",
+    "GTK_MODULES": "gail:atk-bridge",
+    "GNOME_SHELL_SESSION_MODE": "ubuntu",
+    "HOMEBREW_PREFIX": "/home/linuxbrew/.linuxbrew",
+    "GoogleDirectionsApiKey": "AIzaSyBrvnel14cJMU6Vg4gKyXAWXsvUtUGpNkY",
+    "CONDA_BACKUP_FC": "/home/mark/anaconda3/bin/x86_64-conda_cos6-linux-gnu-gfortran",
+    "DBUS_SESSION_BUS_ADDRESS": "unix:path=/run/user/1000/bus",
+    "SNAP_REVISION": "2513",
+    "_CE_M": "",
+    "CONDA_BACKUP_OBJDUMP": "/home/mark/anaconda3/bin/x86_64-conda_cos6-linux-gnu-objdump",
+    "COLORTERM": "truecolor",
+    "CONDA_BACKUP_CXXFLAGS": "-fvisibility-inlines-hidden -std=c++17 -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -pipe",
+    "MANDATORY_PATH": "/usr/share/gconf/ubuntu.mandatory.path",
+    "CONDA_BACKUP_F77": "/home/mark/anaconda3/bin/x86_64-conda_cos6-linux-gnu-gfortran",
+    "CONDA_BACKUP_F95": "/home/mark/anaconda3/bin/x86_64-conda_cos6-linux-gnu-f95",
+    "INFOPATH": "/home/linuxbrew/.linuxbrew/share/info:/home/linuxbrew/.linuxbrew/share/info:",
+    "IM_CONFIG_PHASE": "2",
+    "FLASK_APP": "twitoff:APP",
+    "LOGNAME": "mark",
+    "GTK_IM_MODULE": "ibus",
+    "CONDA_BACKUP_GFORTRAN": "/home/mark/anaconda3/bin/x86_64-conda_cos6-linux-gnu-gfortran",
+    "_": "/usr/local/bin/node",
+    "CONDA_BACKUP_LD_GOLD": "/home/mark/anaconda3/bin/x86_64-conda_cos6-linux-gnu-ld.gold",
+    "CONDA_BACKUP__CONDA_PYTHON_SYSCONFIGDATA_NAME": "_sysconfigdata_x86_64_conda_cos6_linux_gnu",
+    "rvm_bin_path": "/home/mark/.rvm/bin",
+    "CONDA_BACKUP_GCC_NM": "/home/mark/anaconda3/bin/x86_64-conda_cos6-linux-gnu-gcc-nm",
+    "SNAP_CONTEXT": "vJnSlCq2lDSnRp9CM3SnJr6YCK9pgBDMmTB20KmGwgpv",
+    "DEFAULTS_PATH": "/usr/share/gconf/ubuntu.default.path",
+    "IRBRC": "/home/mark/.rvm/rubies/ruby-2.6.3/.irbrc",
+    "SNAP_VERSION": "12.10.0",
+    "CONDA_BACKUP_OBJCOPY": "/home/mark/anaconda3/bin/x86_64-conda_cos6-linux-gnu-objcopy",
+    "CONDA_BACKUP_LD": "/home/mark/anaconda3/bin/x86_64-conda_cos6-linux-gnu-ld",
+    "RUBY_VERSION": "ruby-2.6.3",
+    "XDG_SESSION_ID": "5",
+    "USERNAME": "mark",
+    "CONDA_BACKUP_DEBUG_CFLAGS": "-march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-all -fno-plt -Og -g -Wall -Wextra -fvar-tracking-assignments -ffunction-sections -pipe",
+    "TERM": "xterm-256color",
+    "SNAP_INSTANCE_NAME": "node",
+    "_CE_CONDA": "",
+    "GNOME_DESKTOP_SESSION_ID": "this-is-deprecated",
+    "CONDA_BACKUP_AR": "/home/mark/anaconda3/bin/x86_64-conda_cos6-linux-gnu-ar",
+    "WINDOWPATH": "2",
+    "PATH": "/home/mark/.yarn/bin:/home/mark/.config/yarn/global/node_modules/.bin:/home/mark/anaconda3/condabin:/usr/bin/java:/usr/local/cuda-10.0/bin:/home/mark/.local/bin/aws:/home/mark/.ebcli-virtual-env/executables:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:/home/mark/flutter/bin:/home/mark/.rvm/gems/ruby-2.6.3/bin:/home/mark/.rvm/gems/ruby-2.6.3@global/bin:/home/mark/.rvm/rubies/ruby-2.6.3/bin:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:/home/mark/.local/bin:/home/mark/.rvm/gems/ruby-2.6.3/bin:/home/mark/.rvm/gems/ruby-2.6.3@global/bin:/home/mark/.rvm/rubies/ruby-2.6.3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/mark/.dotnet/tools:/opt/redislabs/bin:/home/mark/.rvm/bin:/usr/share/rvm/rubies/ruby-2.6.3/bin:/opt/mssql-tools/bin:/home/mark/.local/bin:/usr/lib/dart/bin:/home/mark/.pub-cache/bin:/home/mark/.ebcli-virtual-env/executables:/home/mark/Qt/Tools/QtCreator/bin:/cairo/1.16.0_2/lib:/home/mark/.rvm/bin:/snap/bin:/var/lib/snapd/snap/bin:/home/mark/.dotnet/tools:/opt/redislabs/bin:/snap/bin:/var/lib/snapd/snap/bin:/home/mark/.rvm/bin",
+    "CONDA_BACKUP_GPROF": "/home/mark/anaconda3/bin/x86_64-conda_cos6-linux-gnu-gprof",
+    "HOMEBREW_CELLAR": "/home/linuxbrew/.linuxbrew/Cellar",
+    "CONDA_BACKUP_DEBUG_FFLAGS": "-fopenmp -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -pipe",
+    "CONDA_BACKUP_AS": "/home/mark/anaconda3/bin/x86_64-conda_cos6-linux-gnu-as",
+    "SESSION_MANAGER": "local/mark-Alienware-17-R3:@/tmp/.ICE-unix/7221,unix/mark-Alienware-17-R3:/tmp/.ICE-unix/7221",
+    "CONDA_BACKUP_READELF": "/home/mark/anaconda3/bin/x86_64-conda_cos6-linux-gnu-readelf",
+    "SNAP_DATA": "/var/snap/node/2513",
+    "XDG_MENU_PREFIX": "gnome-",
+    "S_COLORS": "auto",
+    "CONDA_BACKUP_CPP": "/home/mark/anaconda3/bin/x86_64-conda_cos6-linux-gnu-cpp",
+    "CONDA_BACKUP_DEBUG_CPPFLAGS": "-DNDEBUG -D_FORTIFY_SOURCE=2 -O2",
+    "GNOME_TERMINAL_SCREEN": "/org/gnome/Terminal/screen/6a9a3826_0bcf_49d7_bac1_f05eae45fbd5",
+    "XDG_RUNTIME_DIR": "/run/user/1000/snap.node",
+    "DISPLAY": ":0",
+    "CONDA_BACKUP_DEBUG_FORTRANFLAGS": "-fopenmp -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -pipe",
+    "MY_RUBY_HOME": "/home/mark/.rvm/rubies/ruby-2.6.3",
+    "FLASK_ENV": "development",
+    "LANG": "en_US.UTF-8",
+    "XDG_CURRENT_DESKTOP": "ubuntu:GNOME",
+    "XAUTHORITY": "/run/user/1000/gdm/Xauthority",
+    "LS_COLORS": "rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:",
+    "XMODIFIERS": "@im=ibus",
+    "XDG_SESSION_DESKTOP": "ubuntu",
+    "GNOME_TERMINAL_SERVICE": ":1.86",
+    "SSH_AUTH_SOCK": "/run/user/1000/keyring/ssh",
+    "SNAP_ARCH": "amd64",
+    "SNAP_USER_COMMON": "/home/mark/snap/node/common",
+    "CONDA_PYTHON_EXE": "/home/mark/anaconda3/bin/python",
+    "SNAP_COOKIE": "vJnSlCq2lDSnRp9CM3SnJr6YCK9pgBDMmTB20KmGwgpv",
+    "HOST": "",
+    "SHELL": "/bin/bash",
+    "rvm_prefix": "/home/mark",
+    "CONDA_BACKUP_GCC_RANLIB": "/home/mark/anaconda3/bin/x86_64-conda_cos6-linux-gnu-gcc-ranlib",
+    "SNAP_REEXEC": "",
+    "CONDA_BACKUP_NM": "/home/mark/anaconda3/bin/x86_64-conda_cos6-linux-gnu-nm",
+    "QT_ACCESSIBILITY": "1",
+    "GDMSESSION": "ubuntu",
+    "SNAP_NAME": "node",
+    "GEM_HOME": "/home/mark/.rvm/gems/ruby-2.6.3",
+    "LESSCLOSE": "/usr/bin/lesspipe %s %s",
+    "CONDA_BACKUP_CXXFILT": "/home/mark/anaconda3/bin/x86_64-conda_cos6-linux-gnu-c++filt",
+    "RAILS_ENV": "development",
+    "GJS_DEBUG_OUTPUT": "stderr",
+    "CONDA_BACKUP_LDFLAGS": "-Wl,-O2 -Wl,--sort-common -Wl,--as-needed -Wl,-z,relro -Wl,-z,now -Wl,--disable-new-dtags -Wl,--gc-sections",
+    "SECRET_KEY_BASE": "66cc10d8b7b41ca9d0b3bdb2ee7e54c2a3053f05ad17a664047d47ba9698590ed8b6ea8d9f96e24a64a5229de98c50b31bf189a4b80cdc860926ef0db3221597",
+    "CONDA_BACKUP_ELFEDIT": "/home/mark/anaconda3/bin/x86_64-conda_cos6-linux-gnu-elfedit",
+    "GPG_AGENT_INFO": "/run/user/1000/gnupg/S.gpg-agent:0:1",
+    "rvm_version": "1.29.9 (latest)",
+    "TEXTDOMAINDIR": "/usr/share/locale/",
+    "HomeAddress": "6041 SW 62nd ST 33143",
+    "XDG_VTNR": "2",
+    "CONDA_BACKUP_SIZE": "/home/mark/anaconda3/bin/x86_64-conda_cos6-linux-gnu-size",
+    "QT_IM_MODULE": "ibus",
+    "FLASK_DEBUG": "1",
+    "CONDA_BACKUP_CFLAGS": "-march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -pipe",
+    "PWD": "/home/mark/lambda/climate-hack-winter-2019/kenneth/climate-hack-winter-2019",
+    "GEM_PATH": "/home/mark/.rvm/gems/ruby-2.6.3:/home/mark/.rvm/gems/ruby-2.6.3@global",
+    "XDG_CONFIG_DIRS": "/etc/xdg/xdg-ubuntu:/etc/xdg",
+    "CONDA_BACKUP_ADDR2LINE": "/home/mark/anaconda3/bin/x86_64-conda_cos6-linux-gnu-addr2line",
+    "CLUTTER_IM_MODULE": "xim",
+    "XDG_DATA_DIRS": "/usr/share/ubuntu:/home/mark/.local/share/flatpak/exports/share/:/var/lib/flatpak/exports/share/:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop",
+    "CONDA_EXE": "/home/mark/anaconda3/bin/conda",
+    "CONDA_BACKUP_HOST": "x86_64-conda_cos6-linux-gnu",
+    "SNAP": "/snap/node/2513",
+    "HOMEBREW_REPOSITORY": "/home/linuxbrew/.linuxbrew/Homebrew",
+    "CONDA_BACKUP_FFLAGS": "-fopenmp -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -pipe",
+    "CONDA_BACKUP_CPPFLAGS": "-DNDEBUG -D_FORTIFY_SOURCE=2 -O2",
+    "CONDA_BACKUP_FORTRANFLAGS": "-fopenmp -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -pipe",
+    "VTE_VERSION": "5202",
+    "rvm_path": "/home/mark/.rvm",
+    "CONDA_BACKUP_STRINGS": "/home/mark/anaconda3/bin/x86_64-conda_cos6-linux-gnu-strings",
+    "CUDA_PATH": "/usr/local/cuda-10.0",
+    "MANPATH": "/home/linuxbrew/.linuxbrew/share/man:/home/linuxbrew/.linuxbrew/share/man:",
+    "CONDA_BACKUP_DEBUG_CXXFLAGS": "-fvisibility-inlines-hidden -std=c++17 -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-all -fno-plt -Og -g -Wall -Wextra -fvar-tracking-assignments -ffunction-sections -pipe",
+    "CONDA_BACKUP_CXX": "/home/mark/anaconda3/bin/x86_64-conda_cos6-linux-gnu-c++",
+    "DARK_SKY": "244ec1ed01439cabd8b9f415cf9633ac",
+    "ZIP": "qcvSrWauu1MpoUETRiuywOarkn6RSqhQKrlaQA7OEU9YbvepeDtw13gk72YqiDhH",
+    "GOVV2": "HmQwhxfXCowRmMZrTHPLuvApjCclrcXN",
+    "CLIENT_URL": "http://localhost:3000",
+    "GOOGLE_MAP": "AIzaSyCJ6Dc_UuJ6UTQIlxlkH3aMYRhVHDpdQkw",
+    "NODE_ENV": "test",
+    "PORT": "5001",
+    "DATABASE_URL": "postgres://juwwvohcorbolo:ce3d8c3e671044f8e15c880db71ce26146826e3f126da53a55788f7f0a7a54ae@ec2-23-23-173-30.compute-1.amazonaws.com:5432/d4l0sqaog7kpe0",
+    "STATION_DATABASE_URL_HEROKU": "postgres://cbzzmuglaifvrs:79cd4150369272dc8afc938b4c8c85430cf8c5f30a3916d9ec45a51f7b08729e@ec2-174-129-225-9.compute-1.amazonaws.com:5432/da4fit45q0u0p0",
+    "STATION_DATABASE_URL": "postgres://mark:p@localhost:5432/mark"
+  },
+  "userLimits": {
+    "core_file_size_blocks": {
+      "soft": 0,
+      "hard": "unlimited"
+    },
+    "data_seg_size_kbytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "file_size_blocks": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "max_locked_memory_bytes": {
+      "soft": 16777216,
+      "hard": 16777216
+    },
+    "max_memory_size_kbytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "open_files": {
+      "soft": 4096,
+      "hard": 4096
+    },
+    "stack_size_bytes": {
+      "soft": 8388608,
+      "hard": "unlimited"
+    },
+    "cpu_time_seconds": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "max_user_processes": {
+      "soft": 127481,
+      "hard": 127481
+    },
+    "virtual_memory_kbytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    }
+  },
+  "sharedObjects": [
+    "/snap/core/current/lib/x86_64-linux-gnu/libdl.so.2",
+    "/snap/core/current/lib/x86_64-linux-gnu/librt.so.1",
+    "/snap/core/current/usr/lib/x86_64-linux-gnu/libstdc++.so.6",
+    "/snap/core/current/lib/x86_64-linux-gnu/libm.so.6",
+    "/snap/core/current/lib/x86_64-linux-gnu/libgcc_s.so.1",
+    "/snap/core/current/lib/x86_64-linux-gnu/libpthread.so.0",
+    "/snap/core/current/lib/x86_64-linux-gnu/libc.so.6",
+    "/snap/core/current/lib64/ld-linux-x86-64.so.2",
+    "/snap/core/current/lib/x86_64-linux-gnu/libnss_files.so.2",
+    "/lib/x86_64-linux-gnu/libnss_mdns4_minimal.so.2",
+    "/snap/core/current/lib/x86_64-linux-gnu/libnss_dns.so.2",
+    "/snap/core/current/lib/x86_64-linux-gnu/libresolv.so.2"
+  ]
+}
