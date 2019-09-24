@@ -17,7 +17,7 @@ _log = (function (undefined) {
 
     // via @fredrik SO trace suggestion; wrapping in special construct so it stands out
 
-    // var suffix ='_log crap';
+    var suffix ='_log crap';
     try {
       suffix = {
         "@": (this.lineNumber
@@ -25,7 +25,7 @@ _log = (function (undefined) {
           : extractLineNumberFromStack(this.stack)
         )
       };
-      // console.log('_logno error suffix', suffix)
+      console.log('_logno error suffix', suffix)
     }
     catch (err) {
       console.log('_log error', err)
@@ -81,9 +81,9 @@ _log = (function (undefined) {
 // // turn it on
 // DEBUGMODE = true;
 
-// _log('you should', 'see this', { a: 1, b: 2, c: 3 });
+// _log('you should', 'see this', {a:1, b:2, c:3});
 // console.log('--- regular log ---');
-// _log('you should', 'also see this', { a: 4, b: 8, c: 16 });
+// _log('you should', 'also see this', {a:4, b:8, c:16});
 
 // // turn it off
 // DEBUGMODE = false;
