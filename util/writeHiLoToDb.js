@@ -252,9 +252,8 @@ async function getTemps(lat, lng, zip) {  // zip for debugging only
 async function writeHiLoToDb() {
   // console.log('pool', pool)
   let promise = new Promise((resolve, reject) => {
-
     try {
-      pool.query("SELECT COUNT(*) AS c FROM zip")
+      pool.query("SELECT COUNT(*) AS c FROM zip WHERE temps IS NULL")
         .then(res => {
           const totalZips = res.rows[0].c
           let zipsProcessed = 0
@@ -262,138 +261,140 @@ async function writeHiLoToDb() {
           _log('rowCount', rowCount)
           process.stdout.write(`psw rowcount: ${rowCount}`)
           let rowsUpdated = 0
-          // while (rowCount > 0) {
-          //rowCountInterval = setInterval(() => {
-          getZipQueryLock.acquire(getZipQueryKey)
-            .then(zipKeyQueryValue => {
-              try {
-                let rowsToGet = Math.min(rowCount, blksize)
-                let query = `SELECT * FROM zip WHERE zip.temps IS NULL LIMIT ${rowsToGet} OFFSET ${totalZips - rowCount}`
-                rowCount -= rowsToGet
-                // rowCount = 0 // for debugging
-                //  _log('\nquery', query)
-                pool.query(query)
-                  .then(res => {
-                    // _log('SELECT * res', JSON.stringify(res.rows, null, 2), ' length ', res.rows.length)
-                    ris = [...Array(res.rows.length).keys()]
-                    _log('ris.length ', ris.length, ' ris ', ris)
-                    for (ri in res.rows) {
-                      getTempsLock.acquire(getTempsKey)
-                        .then(getTempsValue =>
-                        // alock.acquire('row', () => 
-                        {
-                          try {
-                            if (ris.length == 0) {
-                              _log('ris.length == resolve')
-                              return resolve({ rowsUpdated })
-                            }
-                            _log('ris', ris)
-                            ri_ = ris.shift()
-                            const row = res.rows[ri_];
-                            _log('row:', row, ' ri_:', ri_)
-                            GetTemps(row.lat, row.lng, row.zip)
-                              .then(temps => {
-                                _log('getTemps temps ', temps)
+          const blocks = Math.ceil(totalZips / Number(blksize))
+          _log('\nblocks', blocks)
+          for (blockCount = 0; blockCount < blocks; blockCount++) {
+            //rowCountInterval = setInterval(() => {
+            getZipQueryLock.acquire(getZipQueryKey)
+              .then(zipKeyQueryValue => {
+                try {
+                  let rowsToGet = Math.min(rowCount, blksize)
+                  let query = `SELECT * FROM zip WHERE zip.temps IS NULL LIMIT ${rowsToGet} OFFSET ${totalZips - rowCount}`
+                  rowCount -= rowsToGet
+                  // rowCount = 0 // for debugging
+                  //  _log('\nquery', query)
+                  pool.query(query)
+                    .then(res => {
+                      // _log('SELECT * res', JSON.stringify(res.rows, null, 2), ' length ', res.rows.length)
+                      ris = [...Array(res.rows.length).keys()]
+                      _log('ris.length ', ris.length, ' ris ', ris)
+                      for (ri in res.rows) {
+                        getTempsLock.acquire(getTempsKey)
+                          .then(getTempsValue =>
+                          // alock.acquire('row', () => 
+                          {
+                            try {
+                              if (ris.length == 0) {
+                                _log('ris.length == resolve')
+                              } else {
+                                // _log('ris', ris)
+                                ri_ = ris.shift()
+                                const row = res.rows[ri_];
+                                // _log('row:', row, ' ri_:', ri_)
+                                GetTemps(row.lat, row.lng, row.zip)
+                                  .then(temps => {
+                                    //  _log('getTemps temps ', temps)
 
-                                //             const test = `
-                                // {
-                                //   "years": [{
-                                //       "low": 10,
-                                //       "high": 20,
-                                //       "year": 1999
-                                //     },
-                                //     {
-                                //       "low": 11,
-                                //       "high": 21,
-                                //       "year": 2000
-                                //     }
-                                //   ]
-                                // }
-                                // `
-                                // const ltest = '{"years": [{"low": 10, "high": 20, "year": 1999},{"low": 11, "high": 21, "year": 2000}]}'
-                                // const low = '"low"'
-                                // const high = '"high"'
-                                // const year = '"year"'
+                                    //             const test = `
+                                    // {
+                                    //   "years": [{
+                                    //       "low": 10,
+                                    //       "high": 20,
+                                    //       "year": 1999
+                                    //     },
+                                    //     {
+                                    //       "low": 11,
+                                    //       "high": 21,
+                                    //       "year": 2000
+                                    //     }
+                                    //   ]
+                                    // }
+                                    // `
+                                    // const ltest = '{"years": [{"low": 10, "high": 20, "year": 1999},{"low": 11, "high": 21, "year": 2000}]}'
+                                    // const low = '"low"'
+                                    // const high = '"high"'
+                                    // const year = '"year"'
 
-                                pool.query(`UPDATE zip SET temps = '${temps}' WHERE zip = ${row.zip} `)
-                                  .then(qr => {
-                                    _log(row.zip + ' update worked qr', JSON.stringify(qr, null, 2), 'rowCount', qr.rowCount)
-                                    try {
-                                      rowsUpdated += qr.rowCount
-                                      process.stdout.write(`${row.zip} ${rowsUpdated} ${rowsToGet}`)
-                                      _log(`${row.zip} updated ${rowsUpdated} ${rowsToGet}`)
-                                    }
-                                    finally {
-                                      try {
-                                        // if (++zipsProcessed == totalZips) 
-                                        if (ris.length == 0) // test one block
-                                        //                                      test one
-                                        {
-                                          console.log(`rowcode == 0 rowsUpdated: ${rowsUpdated} ___________________________________`)
-                                          return resolve({ rowsUpdated })
+                                    pool.query(`UPDATE zip SET temps = '${temps}' WHERE zip = ${row.zip} `)
+                                      .then(qr => {
+                                        //  _log(row.zip + ' update worked qr', JSON.stringify(qr, null, 2), 'rowCount', qr.rowCount)
+                                        try {
+                                          rowsUpdated += qr.rowCount
+                                          process.stdout.write(`${row.zip} ${rowsUpdated} ${rowsToGet}`)
+                                          // _log(`${row.zip} updated ${rowsUpdated} ${rowsToGet}`)
                                         }
-                                      }
-                                      finally {
-                                        _log('releasing getTempsKey')
-                                        getTempsLock.release(getTempsKey, getTempsValue);
-                                        if (ris.length == 0) {
-                                          _log('releasing getZipQueryKey')
-                                          getZipQueryLock.release(getZipQueryKey, zipKeyQueryValue);
+                                        finally {
+                                          try {
+                                            if (++zipsProcessed == totalZips)
+                                            // if (ris.length == 0) // test one block
+                                            //                                      test one
+                                            {
+                                              _log(`rowcode == 0 rowsUpdated: ${rowsUpdated} ___________________________________`)
+                                              return resolve({ rowsUpdated })
+                                            }
+                                          }
+                                          finally {
+                                            //  _log('releasing getTempsKey')
+                                            getTempsLock.release(getTempsKey, getTempsValue);
+                                            if (ris.length == 0) {
+                                              // _log('releasing getZipQueryKey')
+                                              getZipQueryLock.release(getZipQueryKey, zipKeyQueryValue);
+                                            }
+                                          }
                                         }
-                                      }
-                                    }
 
-                                    // resolve({ qr })
+                                        // resolve({ qr })
+                                      })
+                                      .catch(err => {
+                                        //                                  _log(err.stack)
+                                        _log('rejecting second', err)
+                                        return reject('failed second ' + err)
+                                      })
                                   })
                                   .catch(err => {
-                                    //                                  _log(err.stack)
-                                    _log('rejecting second', err)
-                                    return reject('failed second ' + err)
+                                    try {
+                                      _log(`${row.zip} failed ${JSON.stringify(err, null, 2)}`)
+                                      process.stdout.write(`${row.zip} failed ${err}`)
+                                      if (++zipsProcessed == totalZips) {
+                                        _log(`rowcode == 0 rowsUpdated: ${rowsUpdated} ___________________________________`)
+                                        return resolve({ rowsUpdated })
+                                      }
+                                    }
+                                    finally {
+                                      //                                  _log('releasing getTempsKey')
+                                      getTempsLock.release(getTempsKey, getTempsValue);
+
+                                      if (ris.length == 0) {
+                                        //                                    _log('releasing getZipQueryKey')
+                                        getZipQueryLock.release(getZipQueryKey, zipKeyQueryValue);
+                                      }
+                                    }
+
                                   })
-                              })
-                              .catch(err => {
-                                try {
-                                  _log(`${row.zip} failed ${JSON.stringify(err, null, 2)}`)
-                                  process.stdout.write(`${row.zip} failed ${err}`)
-                                  if (++zipsProcessed == totalZips) {
-                                    console.log(`rowcode == 0 rowsUpdated: ${rowsUpdated} ___________________________________`)
-                                    return resolve({ rowsUpdated })
-                                  }
-                                }
-                                finally {
-                                  _log('releasing getTempsKey')
-                                  getTempsLock.release(getTempsKey, getTempsValue);
+                              } // ris.length == 0 else
+                            } // try
+                            finally {
+                              //                          _log('getTempLock finally')
+                            }
+                          }) // alock
+                          .then(() => { }) // release "row"
+                      } // for ri
 
-                                  if (ris.length == 0) {
-                                    _log('releasing getZipQueryKey')
-                                    getZipQueryLock.release(getZipQueryKey, zipKeyQueryValue);
-                                  }
-                                }
+                    }) // blksize querry
+                    .catch(err => {
+                      console.log('blksize first query failed ', err)
+                      return reject("first" + err)
+                      _log('stack', (new Error).stack)
 
-                              })
-                          } // try
-                          finally {
-                            //                          _log('getTempLock finally')
-                          }
-                        }) // alock
-                        .then(() => { }) // release "row"
-                    } // for ri
+                    })
 
-                  }) // blksize querry
-                  .catch(err => {
-                    console.log('blksize first query failed ', err)
-                    return reject("first" + err)
-                    _log('stack', (new Error).stack)
-
-                  })
-
-              } // try
-              finally {
-                _log('getZipQueryLock finally')
-              }
-            }) // getZipQueryLock
-          // }, 60000) // setInterval 
-          // } // while rowcode
+                } // try
+                finally {
+                  //                _log('getZipQueryLock finally')
+                }
+              }) // getZipQueryLock
+            // }, 60000) // setInterval 
+          } // while rowcode
         }) // count query
     } // try
     catch (err) {

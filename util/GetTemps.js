@@ -13,11 +13,30 @@ function sleep(time) {
 }
 
 
-async function getYearTemps(year, stations, zip) {
-  const L = stations.length
-  let i = 0
-  let sleepMs = 100
-  _log('L', L, 'year', year)
+
+
+async function getYearTemps(year, stations, d, zip) {
+  // const L = stations.length
+  // let i = 0
+  // let sleepMs = 100
+  // _log('L', L, 'year', year)
+  let consecutive_429s = 0
+  const max_429s = 3
+  // const currentYear = new Date().getFullYear()
+  // let years = [...Array(N).keys()].map(i => {
+  //   return { min: null, max: null, year: currentYear - i - 1 }
+  // })
+
+  // const addHL = (years,hlTemp) => {
+  //   h1years = h1Temp.filter((d,i) => years[i].min == null)
+  //   years = years.filter(d => d.min == null).map((d,i) =>  {
+  //     if (h1years[i] != null && h1years[i] != undefined ) {
+  //       if (d.min == null || d.min == 100)  d.min = h1years[i].min
+  //       if (d.max == null) d.max = h1years[i].max
+  //     }
+  //     return d
+  //   })
+  // }
 
   // const promises = stations.map(async station => {
   //   try {
@@ -42,18 +61,25 @@ async function getYearTemps(year, stations, zip) {
     station = stations[i]
     try {
       const hlTemps = await getHLTemps(year, station, zip)
-      _log('returning hlTemps', hlTemps, 'for year', year, 'and zip', zip)
-      return hlTemps
+      // _log('returning hlTemps', hlTemps, 'for year', year, 'and zip', zip)
+      consecutive_429s = 0
+      if (h1Temps != undefined && h1Temps != null) return hlTemps
     }
     catch (err) {
-      _log("getYearTemps error", err, year, station, zip)
+      // _log("getYearTemps error", err, year, station.stationid, zip)
       if (err.err.indexOf(429) >= 0) {
-        _log("resetting for 429, trying station again")
-        await sleep(2000)
-        i -= 1
+        if (++consecutive_429s < max_429s) {
+          //  _log("resetting for 429, trying station again")
+          await sleep(2000)
+          i -= 1
+        } // else go on to the next station
+      }
+      else {
+        consecutive_429s = 0
       }
     }
   }
+  return undefined
 }
 
 String.prototype.replaceAll = function (target, replacement) {
@@ -63,14 +89,14 @@ String.prototype.replaceAll = function (target, replacement) {
 
 async function GetTemps(lat, lng, zip) {  // zip for debugging only
   try {
-    _log('GetTemps', lat, lng, zip)
+    // _log('GetTemps', lat, lng, zip)
     stations = await getNoaaStations(lat, lng, stationPool)
     // _log('stations.length', stations.length)
 
     const N = 20
     const currentYear = new Date().getFullYear()
     let years = [...Array(N).keys()].map(i => currentYear - i - 1)
-
+    let throwable = []
     try {
       const promises = years.map(async year => {
         const stationsYears = JSON.parse(JSON.stringify(stations)).map(s => {
@@ -80,49 +106,38 @@ async function GetTemps(lat, lng, zip) {  // zip for debugging only
         }).filter(station => station.years.length != 0)
         try {
           const HL = await getYearTemps(year, stationsYears, zip)
+          if (HL == undefined) {
+            throwable.push(year)
+          }
           return HL
         }
         catch (err) {
           _log(`returning null for zip ${zip} year ${year} `)
+          throwable.push(year)
           return null
         }
       })
       r = await Promise.all(promises)
+      _log('\ntable for ' + zip)
       console.table(r)
+      if (throwable.length > 0) {
+        throw ({ nullyears: throwable })
+      }
       const writer = new streams.WritableStream();
       const myConsole = new console.Console(writer, writer);
-      _log('return r')
+      // _log('return r')
       myConsole.log(r)
       let u = writer.toString().replaceAll('min', '"low"').replaceAll('max', '"high"').replaceAll('year', '"year"')
-      // let s = writer.toString()
-      // let t = writer.toString()
-      // s = s.split('low').join('"low"')
-      // _log('lows', s)
-      // s = s.split('high').join('"high"')
-      // _log('lowhighs', s)
-      // s = s.split('year').join('"year"')
-      // _log('GitTemps return', s)
-
-      // t = replaceAll(t, 'low', '"low"')
-      // _log('lowt', t)
-
-      // t = replaceAll(t, 'high', '"high"')
-      // _log('lowhight', t)
-      // t = replaceAll(t, 'year', '"year"')
-      // _log('t', t)
-      // _log('s', s)
-
       return u
-
     }
     catch (err) {
       _log('GetTemps ', err)
-      throw new Error({ err })
+      throw err
     }
   }
   catch (serr) {
-    _log('Get Stations', err)
-    throw new Error({ serr })
+    _log('Get Stations', serr)
+    throw { err: serr }
   }
 
 

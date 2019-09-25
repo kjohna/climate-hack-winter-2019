@@ -9,7 +9,7 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
-      "program": "${workspaceFolder}/util/writeHiLoToDb.js"
+      "program": "${workspaceFolder}/util/WriteHiLoToDB.js"
     },
     {
       "type": "node",

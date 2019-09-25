@@ -3,6 +3,11 @@ const rateLimit = require("axios-rate-limit");
 const _log = require("../util/_log")
 const colors = require("../util/colors")
 
+
+function sleep(time) {
+  return new Promise(resolve => setTimeout(resolve, time));
+}
+
 const http = rateLimit(
   axios.create({
     headers: {
@@ -12,22 +17,27 @@ const http = rateLimit(
       }
     }
   }),
-  { maxRequests: 5, perMilliseconds: 600 }
+  { maxRequests: 2, perMilliseconds: 1100 }
 );
+
 
 async function getHLTemps(year, station, zip) {
   try {
-    _log('getHLTemps year', year, 'station.stationid', station.stationid)
+    //    _log('getHLTemps year', year, 'station.stationid', station.stationid)
     urlMax = `https://www.ncdc.noaa.gov/cdo-web/api/v2/data?stationid=${station.stationid}&datasetid=GHCND&startdate=${year}-01-01&enddate=${year + 1}-01-01&includeAttributes=true&format=json&datatypeid=TMAX&limit=1000`
     urlMin = `https://www.ncdc.noaa.gov/cdo-web/api/v2/data?stationid=${station.stationid}&datasetid=GHCND&startdate=${year}-01-01&enddate=${year + 1}-01-01&includeAttributes=true&format=json&datatypeid=TMIN&limit=1000`
 
     url = urlMax
 
     recordsMax = await http.get(urlMax)
+    // await sleep(200)
     recordsMin = await http.get(urlMin)
     let max = -100;
     let min = 100;
     let min_key = -1;
+
+    // _log(recordsMax.data)
+    // _log(recordsMin.data)
 
     for (records of [recordsMax, recordsMin]) {
       // max_count = 0;
@@ -46,7 +56,7 @@ async function getHLTemps(year, station, zip) {
           // min_count += 1;
           if (r.value < min) {
             min = r.value;
-            min_key = key;
+            min_key = 0;
           }
           // min += r.value;
           // console.log(`${r.datatype} found   ${r.value}`)
@@ -54,19 +64,21 @@ async function getHLTemps(year, station, zip) {
       }
     }
     if (max > min) {
-      _log(`resolving getMinMax ${year} min ${min}  max ${max} min_key  ${min_key}`)
+      //  _log(`resolving getMinMax ${year} min ${min}  max ${max} min_key  ${min_key}`)
+      _log(`resolving getGLTemps zip ${zip}  year ${year}  stations.stationid ${station.stationid}  min ${min}  max ${max}`)
+
       return { year, min, max }
     }
     else {
-      console.log(`rejecting getMinMax zip ${zip} min ${min}  max ${max} url ${url}`)
+      // console.log(`rejecting getMinMax zip ${zip} min ${min}  max ${max} url ${url}`)
       throw { err: "Min/Max not found", year, url }
     }
 
   }
   catch (err) {
-    _log("zip", zip, "GHCND error for url", url)
+    // _log("zip", zip, "GHCND error", err.data, "for url", url)
     throw {
-      err: `can't get station GHCND data url ${url}  err ${err}`, year, zip
+      err: `can't get station GHCND data err ${err} url ${url}  `, year, zip
     }
   }
 }

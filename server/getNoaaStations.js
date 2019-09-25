@@ -4,7 +4,7 @@ const colors = require("../util/colors")
 
 
 async function getNoaaStations(lat, lng, p = pool) {
-  _log(`wtf getNoaaStations lat ${lat}  lng ${lng}`)
+  // _log(`wtf getNoaaStations lat ${lat}  lng ${lng}`)
   const limit = 150
   let promise = new Promise((resolve, reject) => {
     p
@@ -50,7 +50,7 @@ async function getNoaaStations(lat, lng, p = pool) {
               // stations.push(o)
               // _log(`stations length: ${stations.length}`)
               if (stations.length == limit) {  // maximum of limit station id sets
-                _log(colors.Green + 'getNoaaStations resolving stations' + colors.Reset)
+                //  _log(colors.Green + 'getNoaaStations resolving stations' + colors.Reset)
                 // _log(stations)
                 return resolve(stations)
               }
