@@ -2,7 +2,7 @@
 var streams = require('memory-streams');
 // var assert = require('assert');
 
-const getHLTemps = require("../server/getMinMax")
+const getHLTemps = require("../server/getHLTemps")
 const _log = require("./_log")
 const getNoaaStations = require("../server/getNoaaStations")
 const stationPool = require("../server/pgClient").stationPool
@@ -15,7 +15,7 @@ function sleep(time) {
 
 
 
-async function getYearTemps(year, stations, d, zip) {
+async function getYearTemps(year, stations, zip) {
   // const L = stations.length
   // let i = 0
   // let sleepMs = 100
@@ -56,29 +56,52 @@ async function getYearTemps(year, stations, d, zip) {
   // _log("getYearTemps can't get year", year)
   // throw { err: `can't get year ${year}` }
 
-
+  if (zip < 10000) {
+    _log('using PR all stations together')
+    return await getHLTemps(year, stations, zip)
+  }
+  else
+    _log('one station at a time')
+  _log('station ids', stations.map(s => s.stationid))
+  let max_score = -1
+  let highScoreHL = null
   for (let i = 0; i < stations.length; i++) {
     station = stations[i]
     try {
       const hlTemps = await getHLTemps(year, station, zip)
-      // _log('returning hlTemps', hlTemps, 'for year', year, 'and zip', zip)
       consecutive_429s = 0
-      if (h1Temps != undefined && h1Temps != null) return hlTemps
+      if (hlTemps != undefined && hlTemps != null) {
+        score = hlTemps.score
+        if (score > 20) {
+          _log('returning hlTemps', hlTemps, 'for year', year, 'and zip', zip)
+          return { year: hlTemps.year, min: hlTemps.min, max: hlTemps.max }
+        }
+        if (score > max_score) {
+          max_score = score
+          highScoreHL = { year: hlTemps.year, min: hlTemps.min, max: hlTemps.max }
+        }
+      }
     }
     catch (err) {
-      // _log("getYearTemps error", err, year, station.stationid, zip)
-      if (err.err.indexOf(429) >= 0) {
-        if (++consecutive_429s < max_429s) {
-          //  _log("resetting for 429, trying station again")
-          await sleep(2000)
-          i -= 1
-        } // else go on to the next station
+      _log("getYearTemps error", err, year, station.stationid, zip)
+      try {
+        if (err.err.indexOf(429) >= 0) {
+          if (++consecutive_429s < max_429s) {
+            //  _log("resetting for 429, trying station again")
+            await sleep(2000)
+            i -= 1
+          } // else go on to the next station
+        }
+        else {
+          consecutive_429s = 0
+        }
       }
-      else {
+      catch (err) {
         consecutive_429s = 0
       }
     }
   }
+  if (highScoreHL != null) return highScoreHL
   return undefined
 }
 
@@ -98,31 +121,69 @@ async function GetTemps(lat, lng, zip) {  // zip for debugging only
     let years = [...Array(N).keys()].map(i => currentYear - i - 1)
     let throwable = []
     try {
-      const promises = years.map(async year => {
-        const stationsYears = JSON.parse(JSON.stringify(stations)).map(s => {
-          s['years'] = [...Array(new Date(s.maxdate).getFullYear() - new Date(s.mindate).getFullYear()).keys()].map(y =>
-            y + new Date(s.mindate).getFullYear()).filter(y => y == year)
-          return s
-        }).filter(station => station.years.length != 0)
+      // const promises = years.map(async year => {
+      //   if (throwable.length > 0) {
+      //     _log('return null map shortcut')
+      //     return null
+      //   }
+      //   const stationsYears = JSON.parse(JSON.stringify(stations)).map(s => {
+      //     s['years'] = [...Array(new Date(s.maxdate).getFullYear() - new Date(s.mindate).getFullYear()).keys()].map(y =>
+      //       y + new Date(s.mindate).getFullYear()).filter(y => y == year)
+      //     return s
+      //   }).filter(station => station.years.length != 0)
+      //   try {
+      //     const HL = await getYearTemps(year, stationsYears, zip)
+      //     if (HL == undefined) {
+      //       _log('pushing throwable')
+      //       throwable.push(year)
+      //       throw throwable
+      //     }
+      //     else
+      //       _log('not pushing throwable for ', HL)
+      //     return HL
+      //   }
+      //   catch (err) {
+      //     _log(`returning null ${err} for zip ${zip} year ${year} ${err.stack}`)
+      //     throwable.push(year)
+      //     // throw throwable
+      //     return null
+      //   }
+      // })
+      // if (throwable.length > 0) {
+      //   throw ({ nullyears: throwable })
+      // }
+      // r = await Promise.all(promises)
+      _log('\ntable for ' + zip)
+      r = []
+      for (let yi = 0; yi < years.length; yi++) {
         try {
+          year = years[yi]
+          const stationsYears = JSON.parse(JSON.stringify(stations)).map(s => {
+            s['years'] = [...Array(new Date(s.maxdate).getFullYear() - new Date(s.mindate).getFullYear()).keys()].map(y =>
+              y + new Date(s.mindate).getFullYear()).filter(y => y == year)
+            return s
+          }).filter(station => station.years.length != 0)
           const HL = await getYearTemps(year, stationsYears, zip)
           if (HL == undefined) {
+            _log('pushing throwable')
             throwable.push(year)
+            break
           }
-          return HL
+          else
+            _log('not pushing throwable for ', HL)
+          r.push(HL)
         }
         catch (err) {
-          _log(`returning null for zip ${zip} year ${year} `)
+          _log(`returning null ${err} for zip ${zip} year ${year} ${err.stack}`)
           throwable.push(year)
-          return null
+          break
+          // throw throwable
         }
-      })
-      r = await Promise.all(promises)
-      _log('\ntable for ' + zip)
-      console.table(r)
+      }
       if (throwable.length > 0) {
         throw ({ nullyears: throwable })
       }
+      console.table(r)
       const writer = new streams.WritableStream();
       const myConsole = new console.Console(writer, writer);
       // _log('return r')

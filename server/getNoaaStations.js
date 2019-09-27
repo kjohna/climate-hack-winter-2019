@@ -9,10 +9,10 @@ async function getNoaaStations(lat, lng, p = pool) {
   let promise = new Promise((resolve, reject) => {
     p
       .query(
-        `SELECT latitude, longitude, stationid FROM station 
+        `SELECT latitude, longitude, stationid, datacoverage FROM station 
         WHERE SUBSTRING(stationid FOR 6) = 'GHCND:'
-        GROUP BY latitude, longitude, stationid
-        ORDER BY MIN(ABS(latitude - ${lat}) * 1.2  + ABS(longitude - ${lng})), stationid 
+        GROUP BY datacoverage, latitude, longitude, stationid
+        ORDER BY datacoverage * -2 + MIN(ABS(latitude - ${lat}) * 1.2  + ABS(longitude - ${lng})), stationid 
         LIMIT ${limit};`
       )
       .then(res => {

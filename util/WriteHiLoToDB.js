@@ -2,8 +2,8 @@
 var dotenv = require('dotenv');
 dotenv.load();
 
-// const AsyncLock = require('async-lock');
-// const alock = new AsyncLock();
+const AsyncLock = require('async-lock');
+const lock = new AsyncLock();
 
 
 DEBUGMODE = true;
@@ -50,27 +50,39 @@ async function WriteHiLoToDB() {
   _log('rowCount', rowCount)
   process.stdout.write(`psw rowcount: ${rowCount}`)
   let rowsUpdated = 0
-  const blocks = Math.ceil(totalZips / Number(blksize))
+  const blocks = 1 // Math.ceil(totalZips / Number(blksize))
   _log('\nblocks', blocks)
   for (blockCount = 0; blockCount < blocks; blockCount++) {
     try {
       let rowsToGet = Math.min(rowCount, blksize)
-      let query = `SELECT * FROM zip WHERE zip.temps IS NULL LIMIT ${rowsToGet} OFFSET ${totalZips - rowCount}`
+      //rowsToGet = 1 // do one in the block
+      let query = `SELECT * FROM zip WHERE status != 'done' LIMIT ${rowsToGet} OFFSET ${totalZips - rowCount};`
       rowCount -= rowsToGet
       // rowCount = 0 // for debugging
       //  _log('\nquery', query)
       let res = await pool.query(query)
-      for (row of res.rows) {
+      // for (row of res.rows) {
+      for (let ri = 0; ri < res.rows.length; ri++) {
         try {
+          row = res.rows[ri]
           _log('row:', row)
+          // lock.acquire('GetTemps', function (cb) {
           temps = await GetTemps(row.lat, row.lng, row.zip)
-          qr = await pool.query(`UPDATE zip SET temps = '${temps}' WHERE zip = ${row.zip} `)
+          //}, function (err, ret, temps) {
+
+          // _log('temps is array?', Array.isArray(JSON.parse(temps)))
+          // if (JSON.parse(temps).every(m => m == null)) throw 'null temps'
+          qr = await pool.query(`UPDATE zip SET temps = '${temps}', status = 'done' WHERE zip = ${row.zip} `)
           assert(qr.rowCount == 1), 'bad update'
           rowsUpdated += qr.rowCount
           process.stdout.write(`${row.zip} ${rowsUpdated} ${rowsToGet}`)
+          //})
         }
         catch (err) {
           _log(`GetTemps Error ${err}, couldn't get zip ${row.zip}`)
+          qr = await pool.query(`UPDATE zip SET status = 'failed' WHERE zip = ${row.zip} `)
+          assert(qr.rowCount == 1), 'bad update'
+          rowsUpdated += qr.rowCount
         }
       }
     }

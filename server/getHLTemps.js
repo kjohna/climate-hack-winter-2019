@@ -4,9 +4,22 @@ const _log = require("../util/_log")
 const colors = require("../util/colors")
 
 
-function sleep(time) {
-  return new Promise(resolve => setTimeout(resolve, time));
+// function sleep(time) {
+//   return new Promise(resolve => setTimeout(resolve, time));
+// }
+
+const getScore = (results, key) => {
+  score = 0
+  try {
+    score = Math.min(new Set(results.filter(r => r.datatype == key).map(r => r.value)).size, 12)
+    _log('getScore score', score)
+  }
+  catch (err) {
+    // _log('score error ', err)
+  }
+  return score
 }
+
 
 const http = rateLimit(
   axios.create({
@@ -23,9 +36,17 @@ const http = rateLimit(
 
 async function getHLTemps(year, station, zip) {
   try {
+    const stations = Array.isArray(station) ?
+      station.map(s => s.stationid).toString().split(',').join('&')
+      : station.stationid
+    if (stations.indexOf('&') > 0)
+      _log(`getHLTemps array for ${zip} year ${year} stations ${JSON.stringify(stations, null, 2)}`)
+    else
+      _log(`zip ${zip} year ${year} single station ${JSON.stringify(station, null, 2)}`)
+
     //    _log('getHLTemps year', year, 'station.stationid', station.stationid)
-    urlMax = `https://www.ncdc.noaa.gov/cdo-web/api/v2/data?stationid=${station.stationid}&datasetid=GHCND&startdate=${year}-01-01&enddate=${year + 1}-01-01&includeAttributes=true&format=json&datatypeid=TMAX&limit=1000`
-    urlMin = `https://www.ncdc.noaa.gov/cdo-web/api/v2/data?stationid=${station.stationid}&datasetid=GHCND&startdate=${year}-01-01&enddate=${year + 1}-01-01&includeAttributes=true&format=json&datatypeid=TMIN&limit=1000`
+    urlMax = `https://www.ncdc.noaa.gov/cdo-web/api/v2/data?stationid=${stations}&datasetid=GHCND&startdate=${year}-01-01&enddate=${year + 1}-01-01&includeAttributes=true&format=json&datatypeid=TMAX&limit=1000`
+    urlMin = `https://www.ncdc.noaa.gov/cdo-web/api/v2/data?stationid=${stations}&datasetid=GHCND&startdate=${year}-01-01&enddate=${year + 1}-01-01&includeAttributes=true&format=json&datatypeid=TMIN&limit=1000`
 
     url = urlMax
 
@@ -38,45 +59,51 @@ async function getHLTemps(year, station, zip) {
 
     // _log(recordsMax.data)
     // _log(recordsMin.data)
-
-    for (records of [recordsMax, recordsMin]) {
-      // max_count = 0;
-      // min_count = 0;
-      for (const r of records.data.results) {
-        //r = records.data.results[key];
-        // console.log('r',JSON.stringify(r, null, 2))
-        // console.log(`key keys ${Object.keys(key)}  key ${key}`)
-        // console.log(`r keys ${Object.keys(r)}  key ${r}`)
-        // if (r.attributes === "E") continue;
-        if (r.datatype == "TMAX") {
-          // max_count += 1;
-          if (r.value > max) max = r.value;
-          // console.log(`TMAX found ${r.value}`)
-        } else if (r.datatype == "TMIN") {
-          // min_count += 1;
-          if (r.value < min) {
-            min = r.value;
-            min_key = 0;
-          }
-          // min += r.value;
-          // console.log(`${r.datatype} found   ${r.value}`)
-        }
-      }
+    let score = 0
+    try {
+      score = getScore(recordsMax.data.results, 'TMAX') + getScore(recordsMin.data.results, 'TMIN')
+      max = Math.max(...recordsMax.data.results.map(r => r.value))
+      min = Math.min(...recordsMin.data.results.map(r => r.value))
     }
-    if (max > min) {
-      //  _log(`resolving getMinMax ${year} min ${min}  max ${max} min_key  ${min_key}`)
-      _log(`resolving getGLTemps zip ${zip}  year ${year}  stations.stationid ${station.stationid}  min ${min}  max ${max}`)
+    catch (err) { }
 
-      return { year, min, max }
+
+    // for (records of [recordsMax, recordsMin]) {
+    //   // max_count = 0;
+    //   // min_count = 0;
+    //   _log('records', JSON.stringify(records.data.results, null, 2))
+    //   for (const r of records.data.results) {
+    //     //r = records.data.results[key];
+    //     // console.log('r',JSON.stringify(r, null, 2))
+    //     // console.log(`key keys ${Object.keys(key)}  key ${key}`)
+    //     // console.log(`r keys ${Object.keys(r)}  key ${r}`)
+    //     // if (r.attributes === "E") continue;
+    //     if (r.datatype == "TMAX") {
+    //       // max_count += 1;
+    //       max = Math.max(max, r.value)
+    //       // console.log(`TMAX found ${r.value}`)
+    //     } else if (r.datatype == "TMIN") {
+    //       // min_count += 1;
+    //       min = Math.min(min, r.value)
+    //       min_key = 0
+    //       // min += r.value;
+    //       // console.log(`${r.datatype} found   ${r.value}`)
+    //     }
+    //   }
+    // }
+    if (max > min) {
+      _log(`resolving getHLTemps zip ${zip}  year ${year}  stations ${stations}  min ${min}  max ${max} score ${score}`)
+
+      return { year, min, max, score }
     }
     else {
-      // console.log(`rejecting getMinMax zip ${zip} min ${min}  max ${max} url ${url}`)
+      console.log(`rejecting getMinMax zip ${zip} min ${min}  max ${max} url ${url}`)
       throw { err: "Min/Max not found", year, url }
     }
 
   }
   catch (err) {
-    // _log("zip", zip, "GHCND error", err.data, "for url", url)
+    _log("zip", zip, "GHCND error", err.data, "for url", url)
     throw {
       err: `can't get station GHCND data err ${err} url ${url}  `, year, zip
     }
