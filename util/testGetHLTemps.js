@@ -2,18 +2,24 @@ DEBUGMODE = true;
 var dotenv = require('dotenv');
 dotenv.load();
 
-const getHLTemps = require("../server/getHLTemps")
-// const stationPool = require("../server/pgClient").stationPool
 const _log = require("./_log")
 
-_log(process.env.GOVV2)
+const USEDS = (process.env.USEDS == 'true')
+_log(`using ${USEDS ? 'dark skys' : 'noaa'}, USEDS: ${USEDS}`)
 
+_log(process.env.GOVV2_1)
+TOKEN = process.env.GOVV2_1
+_log('value TOKEN', TOKEN)
+
+const getHLTemps = require("../server/getHLTemps")
+// const stationPool = require("../server/pgClient").stationPool
 const stationid = "GHCND:USC00083909"
 const emptyStationId = "USC00412621"
 const pr_00606_stationid = "GHCND:RQC00665911"
 const pr_good_stationid = "GHCND:RQC00665807"
 const nyc_10001 = "GHCND:USC00283704"
 const JFK_stationid = "GHCND:USW00094789"
+
 
 _log('test Set', new Set([1, 2, 3, 1, 4, 3]).size)
 
@@ -37,7 +43,7 @@ GHCND:USW00094728&GHCND:USC00284339&GHCND:USW00014732&GHCND:USC00283704&GHCND:US
 getHLTemps(2018, { stationid: JFK_stationid }, 10001)
   .then(o => {
     _log(JSON.stringify(o, null, 2))
-    getHLTemps(2001, { stationid: pr_good_stationid }, 606)
+    getHLTemps(2002, { stationid: pr_good_stationid }, 606)
       .then(o2 => {
         _log(JSON.stringify(o2, null, 2))
       })
@@ -53,7 +59,7 @@ getHLTemps(2018, { stationid: JFK_stationid }, 10001)
     _log(`typeof: ${typeof err.err}`)
     _log(Object.keys(err))
 
-    _log('|' + err.err + '|', new Error().stack)
+    _log('|' + JSON.stringify(err.err, null, 2) + '|', new Error().stack)
     _log(err)
   })
 

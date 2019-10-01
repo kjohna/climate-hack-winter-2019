@@ -2,8 +2,12 @@
 var dotenv = require('dotenv');
 dotenv.load();
 
-const AsyncLock = require('async-lock');
-const lock = new AsyncLock();
+// const AsyncLock = require('async-lock');
+// const lock = new AsyncLock();
+Date.prototype.toTimestampString = function (target, replacement) {
+  s = this.toISOString().replace('T', ' ').slice(0, -1)
+  return s.slice(0, s.indexOf('.'))
+}
 
 
 DEBUGMODE = true;
@@ -14,49 +18,32 @@ console.log('is console.log working?')
 
 // const fs = require('fs');
 const pool = require("../server/pgClient").pool
-// var streams = require('memory-streams');
 var assert = require('assert');
-
-
-// const stationPool = require("../server/pgClient").stationPool
-// const getNoaaStations = require("../server/getNoaaStations")
-// const getMinMax = require("../server/getMinMax").getMinMax
 const GetTemps = require('./GetTemps')
-// const getDataData = require("../server/getDateData")
-// const colors = require("./colors")
-// const lock = require("./lock")
-// const replaceAll = require("./replaceall")
-// String.prototype.replaceAll = function (target, replacement) {
-//   return this.split(target).join(replacement);
-// };
-
-// function sleep(time) {
-//   return new Promise(resolve => setTimeout(resolve, time));
-// }
-
-//var logFile = fs.createWriteStream('log.txt', { flags: 'w' });
-//var logConsole = new console.Console(logFile, logFile);
-
+const GetTempsDS = require('./GetTempsDS')
 
 const blksize = 10
 
-
+const USEDS = (process.env.USEDS == 'true')
+_log(`using ${USEDS ? 'dark skys' : 'noaa'}`)
 
 async function WriteHiLoToDB() {
-  res = await pool.query("SELECT COUNT(*) AS c FROM zip WHERE temps IS NULL")
+  res = await pool.query("SELECT COUNT(*) AS c FROM zip WHERE status = 'untried'")
   const totalZips = parseInt(res.rows[0].c, 10)
-  let zipsProcessed = 0
+  //let zipsProcessed = 0
   let rowCount = totalZips
   _log('rowCount', rowCount)
   process.stdout.write(`psw rowcount: ${rowCount}`)
   let rowsUpdated = 0
-  const blocks = 1 // Math.ceil(totalZips / Number(blksize))
+  const blocks = Math.ceil(totalZips / Number(blksize))
   _log('\nblocks', blocks)
-  for (blockCount = 0; blockCount < blocks; blockCount++) {
+  timestamp = new Date().toTimestampString()
+  for (let blockCount = 0; blockCount < (USEDS ? Math.min(blocks, 48) : blocks); blockCount++) {
     try {
+      let rowsInBlock = 0
       let rowsToGet = Math.min(rowCount, blksize)
       //rowsToGet = 1 // do one in the block
-      let query = `SELECT * FROM zip WHERE status != 'done' LIMIT ${rowsToGet} OFFSET ${totalZips - rowCount};`
+      let query = `SELECT * FROM zip WHERE status = 'untried' LIMIT ${rowsToGet} OFFSET ${totalZips - rowCount};`
       rowCount -= rowsToGet
       // rowCount = 0 // for debugging
       //  _log('\nquery', query)
@@ -67,20 +54,37 @@ async function WriteHiLoToDB() {
           row = res.rows[ri]
           _log('row:', row)
           // lock.acquire('GetTemps', function (cb) {
-          temps = await GetTemps(row.lat, row.lng, row.zip)
+          if (row.attemptedBy == (USEDS ? "DS" : "NOAA")) continue
+          if (USEDS)
+            temps = await GetTempsDS(row.lat, row.lng, row.zip)
+          else
+            temps = await GetTemps(row.lat, row.lng, row.zip)
           //}, function (err, ret, temps) {
 
           // _log('temps is array?', Array.isArray(JSON.parse(temps)))
           // if (JSON.parse(temps).every(m => m == null)) throw 'null temps'
-          qr = await pool.query(`UPDATE zip SET temps = '${temps}', status = 'done' WHERE zip = ${row.zip} `)
+          query = `UPDATE zip SET temps = '${temps}', status = 'done',
+          attemptedBy = '${USEDS ? 'DS' : 'NOAA'}', datetime = '${timestamp}'
+          WHERE zip = ${row.zip};`
+          qr = await pool.query(query)
           assert(qr.rowCount == 1), 'bad update'
           rowsUpdated += qr.rowCount
-          process.stdout.write(`${row.zip} ${rowsUpdated} ${rowsToGet}`)
+          rowsInBlock += qr.rowCount
+          process.stdout.write(`${row.zip} ${rowsUpdated} ${rowsInBlock} ${rowsToGet}`)
           //})
         }
         catch (err) {
-          _log(`GetTemps Error ${err}, couldn't get zip ${row.zip}`)
-          qr = await pool.query(`UPDATE zip SET status = 'failed' WHERE zip = ${row.zip} `)
+          let error = `query ${query} `
+          try {
+            error += JSON.stringify(err, null, 2)
+          }
+          catch (err) {
+            console.log(`circular error ${err}, ${error}`)
+          }
+          _log(`GetTemps Error ${error}, couldn't get zip ${row.zip}`)
+          qr = await pool.query(`UPDATE zip SET status = 'failed', 
+          attemptedBy = '${USEDS ? 'DS' : 'NOAA'}', datetime = '${timestamp}'
+                                 WHERE zip = ${row.zip};`)
           assert(qr.rowCount == 1), 'bad update'
           rowsUpdated += qr.rowCount
         }

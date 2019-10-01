@@ -2,17 +2,39 @@
 var streams = require('memory-streams');
 // var assert = require('assert');
 
+TOKEN = process.env.GOVV2_0
+
 const getHLTemps = require("../server/getHLTemps")
 const _log = require("./_log")
+const colors = require("./colors")
 const getNoaaStations = require("../server/getNoaaStations")
 const stationPool = require("../server/pgClient").stationPool
-const replaceAll = require('./replaceall')
+// const replaceAll = require('./replaceall')
 
 function sleep(time) {
   return new Promise(resolve => setTimeout(resolve, time));
 }
 
 
+let tokens = [process.env.GOVV2_0, process.env.GOVV2_1, process.env.GOVV2_2, process.env.GOVV2_3, process.env.GOVV2_4]
+let tokenIndex = 0
+const outOfTokens = 'out of tokens'
+swapToken = () => {
+  _log('swapToken at ', tokenIndex)
+  if (++tokenIndex >= tokens.length) tokenIndex = 0
+  TOKEN = tokens[tokenIndex]
+  return tokens.length > 1
+}
+killToken = () => {
+  _log('killing token at ', tokenIndex)
+  tk = tokens.splice(tokenIndex, 1)
+  if (tokens.length == 0) throw outOfTokens
+  if (tokenIndex >= tokens.length) tokenIndex = 0
+  TOKEN = tokens[tokenIndex]
+  assert(tk != TOKEN), "TOKEN didn't change"
+  _log(`old token ${tk}, new TOKEN ${TOKEN}`)
+}
+const dayMessage = 'This token has reached its temporary request limit of 10000 per day.'
 
 
 async function getYearTemps(year, stations, zip) {
@@ -57,23 +79,24 @@ async function getYearTemps(year, stations, zip) {
   // throw { err: `can't get year ${year}` }
 
   if (zip < 10000) {
-    _log('using PR all stations together')
+    //    _log('using PR all stations together')
     return await getHLTemps(year, stations, zip)
   }
-  else
-    _log('one station at a time')
-  _log('station ids', stations.map(s => s.stationid))
+  // else
+  //   _log('one station at a time')
+  // _log('station ids', stations.map(s => s.stationid))
   let max_score = -1
   let highScoreHL = null
   for (let i = 0; i < stations.length; i++) {
     station = stations[i]
     try {
+      _log(`${colors.Cyan}await for zip ${zip}  year ${year} station stationid ${station.stationid}${colors.Reset}`)
       const hlTemps = await getHLTemps(year, station, zip)
       consecutive_429s = 0
       if (hlTemps != undefined && hlTemps != null) {
         score = hlTemps.score
         if (score > 20) {
-          _log('returning hlTemps', hlTemps, 'for year', year, 'and zip', zip)
+          _log(colors.Green + 'returning hlTemps', hlTemps, 'for year', year, 'and zip', zip, colors.Reset)
           return { year: hlTemps.year, min: hlTemps.min, max: hlTemps.max }
         }
         if (score > max_score) {
@@ -83,12 +106,14 @@ async function getYearTemps(year, stations, zip) {
       }
     }
     catch (err) {
-      _log("getYearTemps error", err, year, station.stationid, zip)
+      _log(colors.Yellow, "getYearTemps error", err.err, year, station.stationid, zip, colors.Reset)
       try {
-        if (err.err.indexOf(429) >= 0) {
+        if (err.err.indexOf('429') >= 0) {
           if (++consecutive_429s < max_429s) {
-            //  _log("resetting for 429, trying station again")
-            await sleep(2000)
+            _log(colors.Yellow + "resetting token for 429, trying station again" + colors.Reset)
+            if (err.err.indexOf(dayMessage) >= 0) killToken()
+            else if (!swapToken())
+              await sleep(2000)
             i -= 1
           } // else go on to the next station
         }
@@ -98,10 +123,14 @@ async function getYearTemps(year, stations, zip) {
       }
       catch (err) {
         consecutive_429s = 0
+        if (err == outOfTokens)
+          _log(colors.Red + 'thowing for end of day on all tokens' + colors.Reset)
+        if (err == outOfTokens) throw err
       }
     }
   }
   if (highScoreHL != null) return highScoreHL
+  _log(colors.Red + `year ${year} not found for zip ${zip}` + colors.Reset)
   return undefined
 }
 
@@ -121,39 +150,7 @@ async function GetTemps(lat, lng, zip) {  // zip for debugging only
     let years = [...Array(N).keys()].map(i => currentYear - i - 1)
     let throwable = []
     try {
-      // const promises = years.map(async year => {
-      //   if (throwable.length > 0) {
-      //     _log('return null map shortcut')
-      //     return null
-      //   }
-      //   const stationsYears = JSON.parse(JSON.stringify(stations)).map(s => {
-      //     s['years'] = [...Array(new Date(s.maxdate).getFullYear() - new Date(s.mindate).getFullYear()).keys()].map(y =>
-      //       y + new Date(s.mindate).getFullYear()).filter(y => y == year)
-      //     return s
-      //   }).filter(station => station.years.length != 0)
-      //   try {
-      //     const HL = await getYearTemps(year, stationsYears, zip)
-      //     if (HL == undefined) {
-      //       _log('pushing throwable')
-      //       throwable.push(year)
-      //       throw throwable
-      //     }
-      //     else
-      //       _log('not pushing throwable for ', HL)
-      //     return HL
-      //   }
-      //   catch (err) {
-      //     _log(`returning null ${err} for zip ${zip} year ${year} ${err.stack}`)
-      //     throwable.push(year)
-      //     // throw throwable
-      //     return null
-      //   }
-      // })
-      // if (throwable.length > 0) {
-      //   throw ({ nullyears: throwable })
-      // }
-      // r = await Promise.all(promises)
-      _log('\ntable for ' + zip)
+      _log(colors.Cyan + '\ntable for ' + zip + colors.Reset)
       r = []
       for (let yi = 0; yi < years.length; yi++) {
         try {
@@ -165,16 +162,16 @@ async function GetTemps(lat, lng, zip) {  // zip for debugging only
           }).filter(station => station.years.length != 0)
           const HL = await getYearTemps(year, stationsYears, zip)
           if (HL == undefined) {
-            _log('pushing throwable')
+            _log(colors.Red + 'pushing throwable' + colors.Reset)
             throwable.push(year)
             break
           }
           else
-            _log('not pushing throwable for ', HL)
-          r.push(HL)
+            //            _log('not pushing throwable for ', HL)
+            r.push(HL)
         }
         catch (err) {
-          _log(`returning null ${err} for zip ${zip} year ${year} ${err.stack}`)
+          _log(`returning null ${JSON.stringify(err, null, 2)} for zip ${zip} year ${year} ${err.stack}`)
           throwable.push(year)
           break
           // throw throwable
