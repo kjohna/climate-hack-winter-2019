@@ -1,5 +1,6 @@
 
-var streams = require('memory-streams');
+var streams = require('memory-streams')
+var schedule = require('node-schedule')
 // var assert = require('assert');
 
 TOKEN = process.env.GOVV2_0
@@ -15,10 +16,15 @@ function sleep(time) {
   return new Promise(resolve => setTimeout(resolve, time));
 }
 
+const allTokens = [process.env.GOVV2_0, process.env.GOVV2_1, process.env.GOVV2_2, process.env.GOVV2_3, process.env.GOVV2_4]
+let tokens = Array.from(allTokens)
 
-let tokens = [process.env.GOVV2_0, process.env.GOVV2_1, process.env.GOVV2_2, process.env.GOVV2_3, process.env.GOVV2_4]
+// var j = schedule.scheduleJob({ hour: 00, minute: 01 }, function () { // NOAA reset at midnight
+//   tokens = Array.from(allTokens)
+// });
+
 let tokenIndex = 0
-const outOfTokens = 'out of tokens'
+outOfTokens = 'out of tokens'
 swapToken = () => {
   _log('swapToken at ', tokenIndex)
   if (++tokenIndex >= tokens.length) tokenIndex = 0
@@ -38,45 +44,8 @@ const dayMessage = 'This token has reached its temporary request limit of 10000 
 
 
 async function getYearTemps(year, stations, zip) {
-  // const L = stations.length
-  // let i = 0
-  // let sleepMs = 100
-  // _log('L', L, 'year', year)
   let consecutive_429s = 0
   const max_429s = 3
-  // const currentYear = new Date().getFullYear()
-  // let years = [...Array(N).keys()].map(i => {
-  //   return { min: null, max: null, year: currentYear - i - 1 }
-  // })
-
-  // const addHL = (years,hlTemp) => {
-  //   h1years = h1Temp.filter((d,i) => years[i].min == null)
-  //   years = years.filter(d => d.min == null).map((d,i) =>  {
-  //     if (h1years[i] != null && h1years[i] != undefined ) {
-  //       if (d.min == null || d.min == 100)  d.min = h1years[i].min
-  //       if (d.max == null) d.max = h1years[i].max
-  //     }
-  //     return d
-  //   })
-  // }
-
-  // const promises = stations.map(async station => {
-  //   try {
-  //     const hlTemps = await getHLTemps(year, station, zip)
-  //     return hlTemps
-  //   }
-  //   catch (err) {
-  //     return null
-  //   }
-  // })
-
-  // hls = await Promise.all(promises)
-
-  // for (let i = 0; i < hls.length; i++)
-  //   if (hls[i] != null)
-  //     return hls[i]
-  // _log("getYearTemps can't get year", year)
-  // throw { err: `can't get year ${year}` }
 
   if (zip < 10000) {
     //    _log('using PR all stations together')
@@ -171,6 +140,8 @@ async function GetTemps(lat, lng, zip) {  // zip for debugging only
             r.push(HL)
         }
         catch (err) {
+          _log('thowing outoftokens')
+          if (err == outOfTokens) throw err
           _log(`returning null ${JSON.stringify(err, null, 2)} for zip ${zip} year ${year} ${err.stack}`)
           throwable.push(year)
           break

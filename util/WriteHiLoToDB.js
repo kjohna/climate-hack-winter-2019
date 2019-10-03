@@ -28,7 +28,8 @@ const USEDS = (process.env.USEDS == 'true')
 _log(`using ${USEDS ? 'dark skys' : 'noaa'}`)
 
 async function WriteHiLoToDB() {
-  res = await pool.query("SELECT COUNT(*) AS c FROM zip WHERE status = 'untried'")
+  res = await pool.query(USEDS ? "SELECT COUNT(*) AS c FROM zip WHERE status = 'failed' and attemptedBy = 'NOAA'" :
+    "SELECT COUNT(*) AS c FROM zip WHERE status = 'untried'")
   const totalZips = parseInt(res.rows[0].c, 10)
   //let zipsProcessed = 0
   let rowCount = totalZips
@@ -38,12 +39,14 @@ async function WriteHiLoToDB() {
   const blocks = Math.ceil(totalZips / Number(blksize))
   _log('\nblocks', blocks)
   timestamp = new Date().toTimestampString()
-  for (let blockCount = 0; blockCount < (USEDS ? Math.min(blocks, 48) : blocks); blockCount++) {
+  for (let blockCount = 0; blockCount < (USEDS ? Math.min(blocks, 42) : blocks); blockCount++) {
     try {
       let rowsInBlock = 0
       let rowsToGet = Math.min(rowCount, blksize)
       //rowsToGet = 1 // do one in the block
-      let query = `SELECT * FROM zip WHERE status = 'untried' LIMIT ${rowsToGet} OFFSET ${totalZips - rowCount};`
+      let query = USEDS ? `SELECT * FROM zip WHERE status = 'failed' and attemptedBy = 'NOAA' LIMIT ${rowsToGet} OFFSET ${totalZips - rowCount}` :
+        `SELECT * FROM zip WHERE status = 'untried' LIMIT ${rowsToGet} OFFSET ${totalZips - rowCount};`
+
       rowCount -= rowsToGet
       // rowCount = 0 // for debugging
       //  _log('\nquery', query)
@@ -74,6 +77,7 @@ async function WriteHiLoToDB() {
           //})
         }
         catch (err) {
+          if (err.err == outOfTokens) throw err.err
           let error = `query ${query} `
           try {
             error += JSON.stringify(err, null, 2)
@@ -91,10 +95,14 @@ async function WriteHiLoToDB() {
       }
     }
     catch (err) {
+      if (err == outOfTokens) return err
       _log(`fatal query error ${err}`)
       throw err
     }
   }
+  return 'done'
 }
 
-WriteHiLoToDB()
+WriteHiLoToDB().then(v => {
+  console.log(v)
+})
