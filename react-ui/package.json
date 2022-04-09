@@ -9,7 +9,7 @@
     "jquery": "^3.3.1",
     "material-ui": "^0.20.2",
     "metrics-graphics": "^2.15.6",
-    "moment": "^2.23.0",
+    "moment": "^2.29.2",
     "prop-types": "^15.6.2",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
